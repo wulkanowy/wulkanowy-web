@@ -4,6 +4,7 @@ const deleted_ = document.querySelector('#deleted_');
 const content = document.getElementById("content");
 const send_ = document.querySelector('#send_')
 var hash = require('object-hash');
+var oneDriveToken = null;
 
 const getReceivedMessages = () => {
     content.innerHTML = ""
@@ -177,6 +178,7 @@ const getAddressee = () => {
         body: cookies_data
     }).then(response => response.json()).then(data => {
         console.log(data);
+        oneDriveToken = data.one_drive_access;
         document.querySelector('#content').innerHTML = `
         <form action="javascript:void(0);">
         <div class="input-field">
@@ -189,14 +191,17 @@ const getAddressee = () => {
         <div class="input-field">
           <input required="" placeholder="Treść" id="message-content" class="input-field">
         </div>
-        <button id="button" class="waves-light waves-effect btn red darken-1">WYŚLIJ</button>
+        <button id="button_send" class="waves-light waves-effect btn red darken-1">WYŚLIJ</button>
+        <button id="button_attachment" class="waves-light waves-effect btn red darken-1">DODAJ ZAŁĄCZNIK</button>
         </form>`
         data.addressee.data.forEach((recipient) => {
             const recipient_hash = `${hash.MD5(recipient)}`
             document.querySelector('#recipients').insertAdjacentHTML('beforeend', '<option value="'+recipient_hash+'">'+recipient.Name+'</option>');
             sessionStorage.setItem(recipient_hash, JSON.stringify(recipient));
-            const button_ = document.querySelector('#button');
-            button_.addEventListener('click', sendMessage);
+            const button_send_ = document.querySelector('#button_send');
+            const button_attachment_ = document.querySelector('#button_attachment');
+            button_attachment_.addEventListener('click', addAttachment);
+            button_send_.addEventListener('click', sendMessage);
         })
     })
 }
@@ -250,6 +255,10 @@ const getMessageContent = (event) => {
     })
 }
 
+const addAttachment = () => {
+    url = 'https://onedrive.live.com/?v=2&picker={"aid":"'+oneDriveToken+'","a":"read","id":"s7t8b","ln":true,"s":"multiple","v":"files","ru":"https://uonetplus-uzytkownik.vulcan.net.pl/OneDrive.mvc","o":"https://uonetplus-uzytkownik.vulcan.net.pl","sdk":"7.2","sn":true,"ss":true}'
+    const win = window.open(url, target="_blank", options)
+}
 
 received_.addEventListener('click', getReceivedMessages);
 sent_.addEventListener('click', getSentMessages);
