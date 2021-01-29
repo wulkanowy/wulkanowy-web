@@ -14,7 +14,7 @@ from .API.exams import get_exams
 from .API.timetable import get_timetable
 from .API.notes import get_notes
 from .API.attendance import get_attendance
-from .API.messages import get_received_messages, get_sent_messages, get_deleted_messages, get_recipients, send_message, get_message_content, add_attachment
+from .API.messages import get_received_messages, get_sent_messages, get_deleted_messages, get_recipients, send_message, get_message_content
 from .API.homeworks import get_homeworks
 from .API.mobile_access import get_registered_devices, register_device
 from .API.school_data import get_school_data
@@ -305,20 +305,5 @@ def message_content(request, *args, **kwargs):
         message_id = data['message_id']
         content = get_message_content(register_id, students, oun, s, date, school_year, symbol, message_id)
         return JsonResponse(content, safe=False)
-    else:
-        return redirect('../')
-
-def attachment(request, *args, **kwargs):
-    if request.session.has_key('is_logged'):
-        data = json.loads(request.body)
-        register_id = data['data']['register_id']
-        students = data['data']['students']
-        oun = data['data']['oun']
-        s = data['data']['s']
-        symbol = data['data']['symbol']
-        key = bytes(request.session[request.session.session_key], 'utf-8')
-        s = decrypt_cookies(s, key)
-        attachment = add_attachment(register_id, students, oun, s, symbol)
-        return JsonResponse(attachment)
     else:
         return redirect('../')

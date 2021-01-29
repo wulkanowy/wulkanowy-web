@@ -17,7 +17,7 @@ from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from frontend.views import default_view, content_view, account_manager_view
-from app.views import login, grades, timetable, exams, homeworks, attendance, notes, registered_devices, register_device_, received_messages, sent_messages, deleted_messages, school_data, dashboard, recipients, send, message_content, attachment
+from app.views import login, grades, timetable, exams, homeworks, attendance, notes, registered_devices, register_device_, received_messages, sent_messages, deleted_messages, school_data, dashboard, recipients, send, message_content
 
 urlpatterns = [
     #views
@@ -44,7 +44,6 @@ urlpatterns = [
     path('api/messages/recipients', recipients, name='recipients'),
     path('api/messages/send', send, name='send_message'),
     path('api/messages/content', message_content, name='message_content'),
-    path('api/messages/attachment', attachment, name='add_attachment'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

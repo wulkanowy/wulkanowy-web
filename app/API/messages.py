@@ -204,30 +204,3 @@ def get_message_content(register_id, students, oun, s, date, school_year, symbol
     content = sess.post(f'{link}/Wiadomosc.mvc/GetInboxMessageDetails', data=json.dumps(payload))
 
     return content.json()
-
-def add_attachment(register_id, students, oun, s, symbol):
-    headers = {
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept': '*/*',
-        'Connection': 'keep-alive',
-        "User-Agent": "Wulkanowy-web :)"
-    }
-
-    if oun == 'http://uonetplus-uczen.fakelog.cf/powiatwulkanowy/123458':
-        link = f'http://uonetplus-uzytkownik.fakelog.cf/{symbol}'
-    else:
-        link = f'https://uonetplus-uzytkownik.vulcan.net.pl/{symbol}'
-
-    if link != f'http://uonetplus-uzytkownik.fakelog.cf/{symbol}':
-        now = calendar.timegm(time.gmtime())
-        one_drive_access = requests.post(f'{link}/UzytkownikCache.mvc/GetCache?_dc={now}', headers=headers, cookies=s)
-        one_drive_access_token = one_drive_access.json()['data']['oneDriveClientId']
-    else:
-        one_drive_access_token = 'fakelog'
-
-    OneDriveLink = 'https://onedrive.live.com/?v=2&picker={"aid":"'+one_drive_access_token+'","a":"read","id":"8pbOi","ln":true,"s":"multiple","v":"files","ru":"https://uonetplus-uzytkownik.vulcan.net.pl/OneDrive.mvc","o":"https://uonetplus-uzytkownik.vulcan.net.pl","sdk":"7.2","sn":true,"ss":true}'
-
-    OneDrive = requests.get(OneDriveLink, headers=headers, cookies=s)
-    print(OneDrive.text)
-
-    return {'dupa': OneDrive.text}
