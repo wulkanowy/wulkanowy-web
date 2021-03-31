@@ -1,6 +1,9 @@
-# Wulkanowy-web
+# Rick Astley fan group
 
-![Nigdy gonna daj you góra](https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif)
+
+<p align="center">
+<img src="https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif" width=1920 height=720>
+</p>
 
 🌋 Unofficial browser VULCAN UONET+ client for both students and their parents
 
