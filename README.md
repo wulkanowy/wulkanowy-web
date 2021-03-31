@@ -1,4 +1,7 @@
 # Wulkanowy-web
+
+![Nigdy gonna daj you góra](https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif)
+
 🌋 Unofficial browser VULCAN UONET+ client for both students and their parents
 
 ![GitHub Workflow Status](https://github.com/wulkanowy/wulkanowy-web/workflows/Python%20application/badge.svg)
