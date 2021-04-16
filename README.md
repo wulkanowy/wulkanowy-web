@@ -1,4 +1,10 @@
-# Wulkanowy-web
+# Rick Astley fan group
+
+
+<p align="center">
+<img src="https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif" width=1920 height=720>
+</p>
+
 🌋 Unofficial browser VULCAN UONET+ client for both students and their parents
 
 ![GitHub Workflow Status](https://github.com/wulkanowy/wulkanowy-web/workflows/Python%20application/badge.svg)
