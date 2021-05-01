@@ -32,7 +32,7 @@ python manage.py runserver
 And in frontend:
 ```shell
 cd frontend
-npm run build
+npm run serve
 ```
 
 # Docker
