@@ -1,12 +1,12 @@
 <template>
   <div id="login">
-    <img class="image" src="../assets/logo_login.svg" width="500" alt="Wulkanowy">
     <v-main style="width: 100%;">
+      <img class="image" src="../assets/logo_login.svg" width="500" alt="Wulkanowy">
       <v-card
         :loading="this.$store.state.isLoading"
         elevation="24"
         id="login-form"
-        class="mx-auto mt-9">
+        class="mx-auto">
         <form>
           <v-container>
             <UserLogin v-if="!this.$store.state.showStudentsList"></UserLogin>
@@ -43,6 +43,7 @@ export default {
 
 #login {
   text-align: center;
+  background-position: center center;
   overflow: hidden;
   background-image: url("../assets/wallpaper.jpg");
   background-size: cover;
@@ -52,8 +53,9 @@ export default {
 
 #login-form {
   width: 500px;
-  top: 15%;
+  top: 5%;
   bottom: 50%;
+  margin-bottom: 200px;
 }
 
 .login-input {
@@ -62,5 +64,9 @@ export default {
 
 .login-button {
   margin: 10px;
+}
+
+.image{
+  min-width: 350px;
 }
 </style>
