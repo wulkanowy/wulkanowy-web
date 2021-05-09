@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     <v-main style="width: 100%;">
-      <img class="image" src="../assets/logo_login.svg" width="500" alt="Wulkanowy">
+      <img class="image" src="../assets/logo_login.svg" alt="Wulkanowy">
       <v-card
         :loading="this.$store.state.isLoading"
         elevation="24"
@@ -14,11 +14,17 @@
           </v-container>
         </form>
       </v-card>
+      <div id="alert">
+        <v-alert
+          class="alert" type="warning" v-if="this.$store.state.showAlert">
+          Uzupełnij wszystkie pola</v-alert>
+      </div>
     </v-main>
   </div>
 </template>
 
 <script>
+
 import UserLogin from '../components/Login/UserLogin.vue';
 import SelectStudent from '../components/Login/SelectStudent.vue';
 
@@ -52,10 +58,9 @@ export default {
 }
 
 #login-form {
-  width: 500px;
   top: 5%;
-  bottom: 50%;
-  margin-bottom: 200px;
+  margin-bottom: 50px;
+  width: 500px;
 }
 
 .login-input {
@@ -67,6 +72,12 @@ export default {
 }
 
 .image{
-  min-width: 350px;
+  max-width: 500px;
+}
+
+.alert{
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
 }
 </style>

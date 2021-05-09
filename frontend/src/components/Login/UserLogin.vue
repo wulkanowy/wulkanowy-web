@@ -1,4 +1,4 @@
-<template>CRLF
+<template>
   <div id="App">
     <v-row align="center">
       <v-col cols="12">
@@ -12,9 +12,7 @@
               <v-select color="red" v-model="selectedSymbol" :disabled="inputDisabled"
               label="Wybierz odmianę dziennika Vulcan" outlined :items="item"
               v-on:change="itemSelected()" item-color="red"></v-select>
-              <v-btn id="buttonOne" text color="red" elevation="2" 
-              outlined :disabled="inputDisabled">Nie pamiętam hasła</v-btn>
-              <v-btn id="buttonTwo" dark color="red" elevation="2" 
+              <v-btn id="buttonTwo" dark color="red" elevation="2"
               @click="loginUser()">Zaloguj się</v-btn>
       </v-col>
     </v-row>
@@ -23,8 +21,8 @@
 <script>
 import Vue from 'vue';
 import SelectStudentVue from './SelectStudent.vue';
-// Wywaliłem "import login from '../../api/login';" bo ciągle wywalał
-// błąd "Expected 1 empty line after import statement not followed by another import"
+import login from '../../api/login';
+
 export default {
   name: 'UserLogin',
   data() {
@@ -37,34 +35,40 @@ export default {
         'Vulcan',
         'Fakelog',
       ],
-    }
+    };
   },
   methods: {
     async loginUser() {
       this.inputDisabled = true;
       if (this.login === '' || this.password === '' || this.symbol === '' || this.selectedSymbol === '') {
+        this.$store.state.showAlert = true;
         this.inputDisabled = false;
-        alert('Uzupełnij wszystkie pola!');
       } else {
-        alert('To działa');
+        this.$store.state.showAlert = false;
         Vue.set(this.$store.state, 'isLoading', true);
-        const response = await this.login.register(this.login, this.password, this.selectedSymbol);
+        const response = await login.register(this.login, this.password, this.selectedSymbol);
         this.$store.state.loginData = response.data;
         console.log(this.$store.state.loginData);
         if (this.$store.state.loginData.data.students.data.length > 1) {
-          this.$store.state.isLoading = false;
+          this.$store.state.isLoading = 'false';
+          this.$store.state.showUserLogin = 'false';
           this.$store.state.showStudentsList = true;
         }
       }
     },
   },
   itemSelected() {
-    alert("to działa")
     if (this.selectedSymbol === 'Fakelog') {
       this.login = 'jan@fakelog.cf';
       this.password = 'jan123';
       this.symbol = 'powiatwulkanowy';
     }
+  },
+
+  resetPassword() {
+    this.$store.state.showStudentsList = false;
+    this.$store.state.showUserLogin = true;
+    this.$store.state.showResetPassword = true;
   },
 };
 </script>
@@ -88,5 +92,9 @@ export default {
     #buttonTwo{
     margin-left: auto;
     display: block;
+  }
+
+  #alert{
+    height: 70px;
   }
 </style>
