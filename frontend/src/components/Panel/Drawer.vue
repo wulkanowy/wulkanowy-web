@@ -4,6 +4,7 @@
       app
       v-model="this.$store.state.drawer"
       :mini-variant.sync="mini"
+      @close="this.$store.state.drawer = !this.$store.state.drawer"
       pernament>
       <v-list>
         <v-list-item class="px-2">
@@ -94,7 +95,7 @@
 export default {
   name: 'Drawer',
   data: () => ({
-    mini: true,
+    mini: false,
   }),
 };
 </script>
