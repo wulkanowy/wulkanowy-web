@@ -12,7 +12,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">
-              Tomasz Kowalski
+              {{ nameSurname }}
             </v-list-item-title>
             <v-list-item-subtitle>6A</v-list-item-subtitle>
           </v-list-item-content>
@@ -95,7 +95,21 @@ export default {
   name: 'Drawer',
   data: () => ({
     mini: false,
+    index: 0,
+    nameSurname: '',
   }),
+  beforeMount() {
+    this.index = this.$store.state.selectedStudent;
+    this.nameSurname = `${this.getName()} ${this.getSurname()}`;
+  },
+  methods: {
+    getName() {
+      return this.$store.state.loginData.data.students.data[this.index].UczenImie;
+    },
+    getSurname() {
+      return this.$store.state.loginData.data.students.data[this.index].UczenNazwisko;
+    },
+  },
 };
 </script>
 
