@@ -63,7 +63,6 @@ export default {
     },
     getInitials() {
       const index = this.$store.state.selectedStudent;
-      console.log(this.$store.state.loginData.data.students.data[index].UczenImie.charAt(0));
       return this.$store.state.loginData.data.students.data[index].UczenImie.charAt(0)
         + this.$store.state.loginData.data.students.data[index].UczenNazwisko.charAt(0);
     },

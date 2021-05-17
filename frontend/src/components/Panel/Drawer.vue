@@ -14,7 +14,7 @@
             <v-list-item-title class="title">
               {{ nameSurname }}
             </v-list-item-title>
-            <v-list-item-subtitle>6A</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ className }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-btn
             icon
@@ -95,19 +95,24 @@ export default {
   name: 'Drawer',
   data: () => ({
     mini: false,
-    index: 0,
     nameSurname: '',
+    className: '',
   }),
   beforeMount() {
-    this.index = this.$store.state.selectedStudent;
-    this.nameSurname = `${this.getName()} ${this.getSurname()}`;
+    const index = this.$store.state.selectedStudent;
+    this.nameSurname = `${this.getName(index)} ${this.getSurname(index)}`;
+    this.className = this.getClassName(index);
   },
   methods: {
-    getName() {
-      return this.$store.state.loginData.data.students.data[this.index].UczenImie;
+    getName(index) {
+      return this.$store.state.loginData.data.students.data[index].UczenImie;
     },
-    getSurname() {
-      return this.$store.state.loginData.data.students.data[this.index].UczenNazwisko;
+    getSurname(index) {
+      return this.$store.state.loginData.data.students.data[index].UczenNazwisko;
+    },
+    getClassName(index) {
+      return this.$store.state.loginData.data.students.data[index].Poziom.toString()
+        + this.$store.state.loginData.data.students.data[index].Symbol;
     },
   },
 };
