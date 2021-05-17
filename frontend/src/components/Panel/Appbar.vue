@@ -13,8 +13,9 @@
           <v-menu offset-y class="text-center" style="width: 200px">
             <template v-slot:activator="{ on }">
                 <v-avatar
-                  v-on="on">
-                  <span class="white--text headline">CJ</span>
+                  v-on="on"
+                  color="blue">
+                  <span class="white--text headline">{{ initials }}</span>
                 </v-avatar>
             </template>
             <v-list>
@@ -42,7 +43,11 @@ export default {
   data: () => ({
     name: 'Dashboard',
     onAvatarClicked: false,
+    initials: 'TK',
   }),
+  beforeMount() {
+    this.initials = this.getInitials();
+  },
   methods: {
     changeDrawerState() {
       this.$store.state.drawer = !this.$store.state.drawer;
@@ -55,6 +60,12 @@ export default {
     },
     async changeStudent() {
       await router.push('/');
+    },
+    getInitials() {
+      const index = this.$store.state.selectedStudent;
+      console.log(this.$store.state.loginData.data.students.data[index].UczenImie.charAt(0));
+      return this.$store.state.loginData.data.students.data[index].UczenImie.charAt(0)
+        + this.$store.state.loginData.data.students.data[index].UczenNazwisko.charAt(0);
     },
   },
 };
