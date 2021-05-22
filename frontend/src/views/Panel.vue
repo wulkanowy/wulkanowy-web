@@ -1,24 +1,24 @@
 <template>
-  <div>
-    <iframe
-      width="560"
-      height="315"
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-      title="YouTube video player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write;
-        encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-      </iframe>
-  </div>
+<div id="App" style="margin: 0;">
+    <div id="appbar">
+      <Appbar></Appbar>
+      <Drawer></Drawer>
+    </div>
+</div>
 </template>
 
 <script>
+import Appbar from '../components/Panel/Appbar.vue';
+import Drawer from '../components/Panel/Drawer.vue';
+
 export default {
   name: 'Panel',
+  components: {
+    Appbar,
+    Drawer,
+  },
 };
 </script>
 
 <style scoped>
-
 </style>

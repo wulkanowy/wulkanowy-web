@@ -5,7 +5,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    showAlert: false,
+    drawer: true,
+    group: null,
+    mini: true,
+    appbarTitle: 'Dashboard',
+    selcetDialog: false,
+    page: 'about',
+    showStudentsList: false,
   },
   mutations: {
   },
