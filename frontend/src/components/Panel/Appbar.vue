@@ -1,18 +1,30 @@
 <template>
   <div>
     <div>
-      <v-app-bar
-        app
-        color="primary"
-        dark>
-        <v-app-bar-nav-icon
-          @click="changeDrawerState">
-        </v-app-bar-nav-icon>
-        <v-toolbar-title>Wulkanowy - {{ this.$store.state.appbarTitle }}</v-toolbar-title>
-        <v-spacer></v-spacer>
+      <v-app-bar app color="primary" dark>
+        <v-app-bar-nav-icon @click="changeDrawerState"></v-app-bar-nav-icon>
+        <v-toolbar-title>{{ this.$store.state.appbarTitle }}</v-toolbar-title>
+        <v-spacer/>
+        <v-dialog v-model="DialogSemestr" max-width="300" class="pa-2" v-if="this.$store.state.group === 1">
+          <v-card>
+            <v-card-title>Change semestr</v-card-title>
+            <v-radio-group class="pr-4 pl-4" v-model="this.$store.state.semestr">
+              <v-radio label="Semestr 1" value="1" key="1" style="width: auto"></v-radio>
+              <v-radio label="Semestr 2" value="2" key="2" style="width: auto"></v-radio>
+            </v-radio-group>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn text color="red darken-2" @click="DialogSemestr = false">Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+            <v-btn icon @click="DialogSemestr = true" class="mr-3">
+            <v-icon>mdi-calendar-multiple</v-icon>
+            </v-btn>
           <v-menu offset-y class="text-center" style="width: 200px">
             <template v-slot:activator="{ on }">
                 <v-avatar
+                  style="cursor: pointer;"
                   v-on="on"
                   color="blue">
                   <span class="white--text headline">{{ initials }}</span>
@@ -44,6 +56,7 @@ export default {
     name: 'Dashboard',
     onAvatarClicked: false,
     initials: 'TK',
+    DialogSemestr: false,
   }),
   beforeMount() {
     this.initials = this.getInitials();
@@ -71,4 +84,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

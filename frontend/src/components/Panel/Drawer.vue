@@ -12,9 +12,9 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">
-              Jan Kowalski
+              {{ nameSurname }}
             </v-list-item-title>
-            <v-list-item-subtitle>4A</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ className }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-btn
             icon
@@ -24,20 +24,21 @@
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
-
       <v-list
         nav
         dense>
         <v-list-item-group
-          v-model="this.$store.state.group">
-          <v-list-item>
+          v-model="this.$store.state.group"
+          active-class="red--text text--accent-4"
+          >
+          <v-list-item key="1">
             <v-list-item-icon>
               <v-icon>mdi-view-dashboard</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
+          <v-list-item key="2">
             <v-list-item-icon>
               <v-icon>mdi-numeric-6-box-multiple-outline</v-icon>
             </v-list-item-icon>
@@ -102,20 +103,20 @@
 
           <v-divider></v-divider>
 
-          <v-list-item @click="clickMenu(settings)">
+          <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-cog</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item>
 
-          <v-list-item @click="clickMenu(about)">
+          <v-list-item>
             <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>About</v-list-item-title>
           </v-list-item>
-       </v-list-item-group>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -150,4 +151,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
