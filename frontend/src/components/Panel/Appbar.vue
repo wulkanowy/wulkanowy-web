@@ -1,11 +1,16 @@
 <template>
   <div>
     <div>
-      <v-app-bar app color="primary" dark>
-        <v-app-bar-nav-icon @click="changeDrawerState"></v-app-bar-nav-icon>
-        <v-toolbar-title>{{ this.$store.state.appbarTitle }}</v-toolbar-title>
+      <v-app-bar app color="red darken-1" dark>
+        <v-app-bar-nav-icon
+        @click.stop="changeDrawerState()">
+        </v-app-bar-nav-icon>
+        <v-toolbar-title>{{ this.$store.state.appbarTitle }}<br>
+        </v-toolbar-title>
+
         <v-spacer/>
-        <v-dialog v-model="DialogSemestr" max-width="300" class="pa-2" v-if="this.$store.state.group === 1">
+        <v-dialog v-model="DialogSemestr" max-width="300" class="pa-2"
+        v-if="this.$store.state.group === 1">
           <v-card>
             <v-card-title>Change semestr</v-card-title>
             <v-radio-group class="pr-4 pl-4" v-model="this.$store.state.semestr">
@@ -14,7 +19,7 @@
             </v-radio-group>
             <v-card-actions>
               <v-spacer />
-              <v-btn text color="red darken-2" @click="DialogSemestr = false">Close</v-btn>
+              <v-btn text color="primary darken-2" @click="DialogSemestr = false">Close</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -26,7 +31,8 @@
                 <v-avatar
                   style="cursor: pointer;"
                   v-on="on"
-                  color="blue">
+                  color="blue"
+                  size="48">
                   <span class="white--text headline">{{ initials }}</span>
                 </v-avatar>
             </template>
@@ -42,6 +48,24 @@
               </v-list-item>
             </v-list>
           </v-menu>
+          <template v-slot:extension>
+            <v-tabs
+            v-model="$store.state.tabGrades"
+            fixed-tabs
+            >
+          <v-tabs-slider></v-tabs-slider>
+
+          <v-tab>
+            DETAILS
+          </v-tab>
+          <v-tab>
+            SUMMARY
+          </v-tab>
+          <v-tab>
+            CLASS
+          </v-tab>
+        </v-tabs>
+          </template>
       </v-app-bar>
     </div>
   </div>
@@ -55,7 +79,7 @@ export default {
   data: () => ({
     name: 'Dashboard',
     onAvatarClicked: false,
-    initials: 'TK',
+    initials: 'LE',
     DialogSemestr: false,
   }),
   beforeMount() {

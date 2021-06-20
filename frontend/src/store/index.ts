@@ -5,12 +5,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    drawer: true,
+    drawer: false,
     group: 1,
     mini: true,
     appbarTitle: 'Grades',
     selectedStudent: 0,
-    semestr: 1,
+    semestr: 0,
+    tabGrades: 3,
+    windowWidth: 0,
   },
   mutations: {
   },

@@ -1,20 +1,31 @@
 <template>
-<div id="Details" class="pa-md-4" style="width: 95%; margin-top: 25px;">
+<div id="Details" style="width: 93.5%; margin: 1.5% 3%;">
   <v-row justify="center">
-    <v-expansion-panels width="100%">
+    <v-card flat v-if="this.grades.length < 1">
+      <v-row>
+      <v-card-title>
+        <v-icon color="black" class="text-h3">mdi-numeric-6-box-multiple-outline</v-icon>
+      </v-card-title>
+      <v-card-title>
+        No grades
+      </v-card-title>
+      </v-row>
+    </v-card>
+    <v-expansion-panels min-width="200px" v-if="this.$store.state.windowWidth > 1000">
       <v-expansion-panel v-for="item in grades" v-bind:key="item.Pozycja">
         <v-expansion-panel-header>
           {{ item.Przedmiot }}
           <span class="text--secondary ml-3">
             <!-- Nie zrobione obliczanie średniej gdy szkoła wyłączy -->
-            Średnia: {{ item.Srednia || 'Brak średniej'}}
+            Average: {{ item.Srednia || 'no'}}
             <!-- Nie zrobione -->
-            Ocen: 2
+            Grades: 2
           </span>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-list>
-            <v-list-item v-for="ites in item.OcenyCzastkowe" v-bind:key="ites.Wpis" @click="ites.dialog = true" link>
+            <v-list-item v-for="ites in item.OcenyCzastkowe"
+            v-bind:key="ites.Wpis" @click="ites.dialog = true" link>
               <v-card class="mr-2" flat>
                 <v-avatar :class="'G' + ites.Wpis">
                     <span class="white--text">{{ ites.Wpis }}</span>
@@ -22,51 +33,126 @@
               </v-card>
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ ites.NazwaKolumny || 'Brak' }}
+                  {{ ites.NazwaKolumny || 'no' }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  Data: {{ ites.DataOceny || 'Brak'  }}
+                  Date: {{ ites.DataOceny || 'no'  }}
                   <span class="mr-2" />
-                  Waga: {{ ites.Waga || 'Brak'  }}
+                  Waga: {{ ites.Waga || 'no'  }}
                 </v-list-item-subtitle>
               </v-list-item-content>
               <v-dialog max-width="500" v-model="ites.dialog">
                 <v-card>
                   <v-card-title class="text-h5 black--text">
                     <strong>
-                      {{ item.Przedmiot || 'Brak'  }}
+                      {{ item.Przedmiot || 'no'  }}
                     </strong>
                   </v-card-title>
                   <v-card-text class="subtitle-1">
-                    {{ ites.NazwaKolumny || 'Brak'  }}
+                    {{ ites.NazwaKolumny || 'no'  }}
                   </v-card-text>
                   <v-card-title class="subtitle-2 grey--text text--darken-2">
                     Column Code
                   </v-card-title>
                   <v-card-subtitle class="subtitle-1 black--text">
-                    {{ ites.KodKolumny || 'Brak'  }}
+                    {{ ites.KodKolumny || 'no'  }}
                   </v-card-subtitle>
                   <v-card-title class="subtitle-2 grey--text text--darken-2">
                     Date
                   </v-card-title>
                   <v-card-subtitle class="subtitle-1 black--text">
-                    {{ ites.DataOceny || 'Brak'  }}
+                    {{ ites.DataOceny || 'no'  }}
                   </v-card-subtitle>
                   <v-card-title class="subtitle-2 grey--text text--darken-2">
                     Teacher
                   </v-card-title>
                   <v-card-subtitle class="subtitle-1 black--text">
-                    {{ ites.Nauczyciel || 'Brak'  }}
+                    {{ ites.Nauczyciel || 'no'  }}
                   </v-card-subtitle>
                   <v-card-title class="subtitle-2 grey--text text--darken-2">
                     Waga
                   </v-card-title>
                   <v-card-subtitle class="subtitle-1 black--text">
-                    {{ ites.Waga || 'Brak' }}
+                    {{ ites.Waga || 'no' }}
                   </v-card-subtitle>
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn text color="red darken-2" @click="ites.dialog = false">Close</v-btn>
+                    <v-btn text color="primary darken-2" @click="ites.dialog = false">Close</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-expansion-panels min-width="200px" class="mt-4" v-if="this.$store.state.windowWidth < 1001">
+      <v-expansion-panel v-for="item in grades" v-bind:key="item.Pozycja">
+        <v-expansion-panel-header>
+          {{ item.Przedmiot }}
+          <span class="text--secondary ml-3">
+            <!-- Nie zrobione obliczanie średniej gdy szkoła wyłączy -->
+            Average: {{ item.Srednia || 'no'}}
+            <!-- Nie zrobione -->
+            Grades: 2
+          </span>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list>
+            <v-list-item v-for="ites in item.OcenyCzastkowe"
+            v-bind:key="ites.Wpis" @click="ites.dialog = true" link>
+              <v-card class="mr-2" flat>
+                <v-avatar :class="'G' + ites.Wpis">
+                    <span class="white--text">{{ ites.Wpis }}</span>
+                </v-avatar>
+              </v-card>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ ites.NazwaKolumny || 'no' }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  Date: {{ ites.DataOceny || 'no'  }}
+                  <span class="mr-2" />
+                  Waga: {{ ites.Waga || 'no'  }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-dialog max-width="500" v-model="ites.dialog">
+                <v-card>
+                  <v-card-title class="text-h5 black--text">
+                    <strong>
+                      {{ item.Przedmiot || 'no'  }}
+                    </strong>
+                  </v-card-title>
+                  <v-card-text class="subtitle-1">
+                    {{ ites.NazwaKolumny || 'no'  }}
+                  </v-card-text>
+                  <v-card-title class="subtitle-2 grey--text text--darken-2">
+                    Column Code
+                  </v-card-title>
+                  <v-card-subtitle class="subtitle-1 black--text">
+                    {{ ites.KodKolumny || 'no'  }}
+                  </v-card-subtitle>
+                  <v-card-title class="subtitle-2 grey--text text--darken-2">
+                    Date
+                  </v-card-title>
+                  <v-card-subtitle class="subtitle-1 black--text">
+                    {{ ites.DataOceny || 'no'  }}
+                  </v-card-subtitle>
+                  <v-card-title class="subtitle-2 grey--text text--darken-2">
+                    Teacher
+                  </v-card-title>
+                  <v-card-subtitle class="subtitle-1 black--text">
+                    {{ ites.Nauczyciel || 'no'  }}
+                  </v-card-subtitle>
+                  <v-card-title class="subtitle-2 grey--text text--darken-2">
+                    Waga
+                  </v-card-title>
+                  <v-card-subtitle class="subtitle-1 black--text">
+                    {{ ites.Waga || 'no' }}
+                  </v-card-subtitle>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn text color="primary darken-2" @click="ites.dialog = false">Close</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -82,6 +168,10 @@
 export default {
   data() {
     return {
+      window: {
+        width: 0,
+        height: 0,
+      },
       grades: [
         {
           Przedmiot: 'Zajęcia z wywchowawcą',
@@ -164,11 +254,23 @@ export default {
       ],
       dialog: false,
       info: false,
-      window: {
-        width: 0,
-        height: 0,
-      },
     };
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    getLoading() {
+      return this.$store.state.isLoading;
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+    },
   },
 };
 </script>

@@ -12,9 +12,9 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">
-              {{ nameSurname }}
+              {{ nameSurname || 'Loading error'}}
             </v-list-item-title>
-            <v-list-item-subtitle>{{ className }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ className || 'Loading error' }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-btn
             icon
@@ -29,7 +29,7 @@
         dense>
         <v-list-item-group
           v-model="this.$store.state.group"
-          active-class="red--text text--accent-4"
+          active-class="primary--text text--accent-4"
           >
           <v-list-item key="1">
             <v-list-item-icon>
