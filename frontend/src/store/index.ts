@@ -10,7 +10,7 @@ export default new Vuex.Store({
     mini: true,
     appbarTitle: 'Grades',
     selectedStudent: 0,
-    semestr: 0,
+    semestr: 1,
     tabGrades: 3,
     windowWidth: 0,
   },

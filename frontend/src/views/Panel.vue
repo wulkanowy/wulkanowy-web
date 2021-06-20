@@ -17,6 +17,7 @@
               </v-tab-item>
               <v-tab-item>
                 <GradesTiles v-if="this.$store.state.windowWidth > 1000"></GradesTiles>
+                <GradesClass></GradesClass>
               </v-tab-item>
             </v-tabs-items>
       </div>
@@ -30,6 +31,7 @@ import Drawer from '../components/Panel/Drawer.vue';
 import GradesTiles from '../components/Panel/Grades/Tiles.vue';
 import GradesDetails from '../components/Panel/Grades/Details.vue';
 import GradesSummary from '../components/Panel/Grades/Summary.vue';
+import GradesClass from '../components/Panel/Grades/Class.vue';
 
 export default {
   name: 'Panel',
@@ -39,6 +41,7 @@ export default {
     GradesTiles,
     GradesDetails,
     GradesSummary,
+    GradesClass,
   },
   data() {
     return {

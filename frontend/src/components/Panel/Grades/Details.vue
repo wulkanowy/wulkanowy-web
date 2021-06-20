@@ -33,7 +33,7 @@
               </v-card>
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ ites.NazwaKolumny || 'no' }}
+                  {{ ites.NazwaKolumny || ites.KodKolumny || 'no' }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   Date: {{ ites.DataOceny || 'no'  }}
@@ -49,7 +49,7 @@
                     </strong>
                   </v-card-title>
                   <v-card-text class="subtitle-1">
-                    {{ ites.NazwaKolumny || 'no'  }}
+                    {{ ites.NazwaKolumny || ites.KodKolumny || 'no'  }}
                   </v-card-text>
                   <v-card-title class="subtitle-2 grey--text text--darken-2">
                     Column Code
@@ -86,7 +86,8 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-expansion-panels min-width="200px" class="mt-4" v-if="this.$store.state.windowWidth < 1001">
+    <v-expansion-panels min-width="200px"
+    class="mt-4 elevation-0" v-if="this.$store.state.windowWidth < 1001" flat>
       <v-expansion-panel v-for="item in grades" v-bind:key="item.Pozycja">
         <v-expansion-panel-header>
           {{ item.Przedmiot }}
@@ -108,7 +109,7 @@
               </v-card>
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ ites.NazwaKolumny || 'no' }}
+                  {{ ites.NazwaKolumny || ites.KodKolumny || 'no' }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   Date: {{ ites.DataOceny || 'no'  }}
@@ -124,7 +125,7 @@
                     </strong>
                   </v-card-title>
                   <v-card-text class="subtitle-1">
-                    {{ ites.NazwaKolumny || 'no'  }}
+                    {{ ites.NazwaKolumny || ites.KodKolumny || 'no' }}
                   </v-card-text>
                   <v-card-title class="subtitle-2 grey--text text--darken-2">
                     Column Code
@@ -255,22 +256,6 @@ export default {
       dialog: false,
       info: false,
     };
-  },
-  created() {
-    window.addEventListener('resize', this.handleResize);
-    this.handleResize();
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.handleResize);
-  },
-  methods: {
-    getLoading() {
-      return this.$store.state.isLoading;
-    },
-    handleResize() {
-      this.window.width = window.innerWidth;
-      this.window.height = window.innerHeight;
-    },
   },
 };
 </script>

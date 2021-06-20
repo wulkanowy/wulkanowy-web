@@ -75,13 +75,15 @@
 import router from '../../router';
 
 export default {
+  data() {
+    return {
+      name: 'Dashboard',
+      onAvatarClicked: false,
+      initials: 'LE',
+      DialogSemestr: false,
+    };
+  },
   name: 'Appbar',
-  data: () => ({
-    name: 'Dashboard',
-    onAvatarClicked: false,
-    initials: 'LE',
-    DialogSemestr: false,
-  }),
   beforeMount() {
     this.initials = this.getInitials();
   },
