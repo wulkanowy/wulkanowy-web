@@ -1,4 +1,5 @@
 <template>
+<v-app>
   <div>
     <div id="appbar">
       <Appbar></Appbar>
@@ -23,6 +24,7 @@
       </div>
     </v-main>
   </div>
+</v-app>
 </template>
 
 <script>
@@ -68,7 +70,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>

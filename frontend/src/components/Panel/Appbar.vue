@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-app-bar app color="red darken-1" dark>
+      <v-app-bar app color="red" dark>
         <v-app-bar-nav-icon
         @click.stop="changeDrawerState()">
         </v-app-bar-nav-icon>

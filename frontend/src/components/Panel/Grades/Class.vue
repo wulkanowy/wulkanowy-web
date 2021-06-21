@@ -11,12 +11,22 @@
         </v-radio-group>
       </v-card-text>
       <v-card-title>Język polski</v-card-title>
+      <v-card flat v-if="this.chart === 0">
         <apexchart
-        type="pie" width="100%" :options="chartOptions" :series="series"></apexchart>
+        type="pie" width="100%" :options="MobilechartOptions" :series="series"></apexchart>
+      </v-card>
+      <v-card flat v-if="this.chart === 1">
+        <apexchart
+        type="pie" width="100%" :options="MobilechartOptions" :series="series"></apexchart>
+      </v-card>
+      <v-card flat v-if="this.chart === 2">
+        <apexchart
+        type="pie" width="100%" :options="MobilechartOptions" :series="series"></apexchart>
+      </v-card>
     </v-card>
     <v-card v-if="this.$store.state.windowWidth > 1000">
       <v-card-text>
-        <v-radio-group row v-model="this.chart">
+        <v-radio-group row v-model="chart">
           <v-row justify="center">
             <v-radio label="Partial"></v-radio>
             <v-radio label="Semestr"></v-radio>
@@ -25,8 +35,18 @@
         </v-radio-group>
       </v-card-text>
       <v-card-title>Język polski</v-card-title>
+      <v-card flat v-if="this.chart === 0">
         <apexchart
-        type="donut" width="50%" :options="chartOptions" :series="series"></apexchart>
+        type="donut" width="65%" :options="chartOptions" :series="series"></apexchart>
+      </v-card>
+      <v-card flat v-if="this.chart === 1">
+        <apexchart
+        type="donut" width="65%" :options="chartOptions" :series="series"></apexchart>
+      </v-card>
+      <v-card flat v-if="this.chart === 2">
+        <apexchart
+        type="donut" width="65%" :options="chartOptions" :series="series"></apexchart>
+      </v-card>
     </v-card>
   </div>
 </template>
@@ -67,6 +87,7 @@ export default {
           pie: {
             expandOnClick: false,
             donut: {
+              size: '60%',
               labels: {
                 show: true,
                 value: {
@@ -93,6 +114,25 @@ export default {
             },
           },
         },
+      },
+      MobilechartOptions: {
+        colors: ['#3dbbf5', '#4caf50', '#a0c431', '#ffb940', '#ff774d', '#d43f3f'],
+        chart: {
+          height: '40vh',
+          type: 'donut',
+          animations: {
+            enabled: false,
+          },
+          fontFamily: 'Roboto, sans-serif',
+          label: true,
+        },
+        legend: {
+          position: 'bottom',
+          markers: {
+            radius: 0,
+          },
+        },
+        labels: ['6, 6-', '5, 5-, 5+', '4, 4-, 4+', '3, 3-, 3+', '2, 2-, 2+', '1, 1+'],
       },
     };
   },
