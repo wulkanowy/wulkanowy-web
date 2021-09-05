@@ -2,9 +2,7 @@
 <div>
   <v-row align="center">
     <v-col cols="12">
-      <p class="justify-center text-center headline font-weight-light">
-        Wybierz Ucznia
-      </p>
+      <p class="justify-center text-center headline font-weight-light">Wybierz Ucznia</p>
     </v-col>
     <v-col cols="12">
       <v-radio-group>

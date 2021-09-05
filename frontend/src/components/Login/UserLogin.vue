@@ -73,9 +73,11 @@ export default {
     async loginUser() {
       this.inputDisabled = true;
       Vue.set(this.$store.state, 'isLoading', true);
-      const response = await login.register(this.login, this.password, this.selectedSymbol);
+      const index = diary.diaries.findIndex((item) => item.name === this.selectedSymbol);
+      const response = await login.login(this.login, this.password,
+        'powiatwulkanowy', diary.diaries[index].url);
       this.$store.state.loginData = response.data;
-      console.log(this.$store.state.loginData);
+
       if (this.$store.state.loginData.data.students.data.length > 1) {
         this.$store.state.showStudentsList = true;
         this.$store.state.isLoading = false;

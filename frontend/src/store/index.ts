@@ -1,7 +1,15 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { Store } from 'vuex';
 
 Vue.use(Vuex);
+
+interface IndexState {
+  drawer: boolean
+  group: any
+  mini: boolean
+  appbarTitle: string
+  selectedStudent: number
+}
 
 export default new Vuex.Store({
   state: {
