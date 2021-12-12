@@ -155,10 +155,12 @@ cython_debug/
 node_modules/
 
 #yarn
-frontend/.yarn/
+frontend/.yarn/*
 !frontend/.yarn/cache
 !frontend/.yarn/patches
 !frontend/.yarn/plugins
 !frontend/.yarn/releases
 !frontend/.yarn/sdks
 !frontend/.yarn/versions
+#yarn
+
