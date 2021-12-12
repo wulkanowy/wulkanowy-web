@@ -6,9 +6,10 @@
         
         steps:
         - uses: actions/checkout@v1
-        - name: Install yarn
+        - name: Install Yarn
+          run: npm install -g yarn
+        - name: Install packages
           run: cd frontend
           run: yarn install
         - name: Build app
-          run: cd frontend
           run: yarn run build
