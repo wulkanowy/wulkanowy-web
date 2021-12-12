@@ -2,14 +2,15 @@
     on: [push]
     jobs:
       build:
+
         runs-on: ubuntu-latest
         
         steps:
-        - uses: actions/checkout@v1
-        - name: Install Yarn
-          run: npm install -g yarn
-        - name: Install packages
-          run: cd frontend
-          run: yarn install
+        - name: Check out code
+          uses: actions/checkout@v2
+        - name: Install deps
+          working-directory: ./frontend
+          run: yarn install --immutable
         - name: Build app
+          working-directory: ./frontend
           run: yarn run build
