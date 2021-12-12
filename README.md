@@ -17,7 +17,8 @@ pip install -r requirements.txt
 ```
 And in frontend:
 ```sh
-yarn i
+cd frontend
+yarn install
 ```
 
 ## 2. Make migrations
@@ -33,7 +34,7 @@ python manage.py migrate
 python manage.py runserver
 ```
 And in frontend:
-```shell
+```sh
 cd frontend
 yarn run build
 ```
