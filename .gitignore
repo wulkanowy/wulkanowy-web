@@ -156,7 +156,6 @@ node_modules/
 
 #yarn
 frontend/.yarn/*
-!frontend/.yarn/cache
 !frontend/.yarn/patches
 !frontend/.yarn/plugins
 !frontend/.yarn/releases
