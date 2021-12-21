@@ -153,13 +153,3 @@ dmypy.json
 cython_debug/
 
 node_modules/
-
-#yarn
-frontend/.yarn/*
-!frontend/.yarn/patches
-!frontend/.yarn/plugins
-!frontend/.yarn/releases
-!frontend/.yarn/sdks
-!frontend/.yarn/versions
-#yarn
-
