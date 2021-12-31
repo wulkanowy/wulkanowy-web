@@ -18,7 +18,7 @@ pip install -r requirements.txt
 And in frontend:
 ```sh
 cd frontend
-yarn install
+npm install
 ```
 
 ## 2. Make migrations
@@ -36,7 +36,7 @@ python manage.py runserver
 And in frontend:
 ```sh
 cd frontend
-yarn run build
+npm run build
 ```
 
 # Docker
