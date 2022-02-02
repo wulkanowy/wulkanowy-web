@@ -1,0 +1,8 @@
+beautifulsoup4
+bs4
+Django
+requests
+cryptography
+djangorestframework
+django-cors-headers
+pytz
