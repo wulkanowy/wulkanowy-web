@@ -6,3 +6,4 @@ cryptography
 djangorestframework
 django-cors-headers
 pytz
+pytest-django
