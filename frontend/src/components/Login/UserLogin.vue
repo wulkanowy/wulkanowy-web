@@ -84,7 +84,7 @@ export default Vue.extend({
       Vue.set(this.$store.state, 'isLoading', true);
       const index = diary.diaries.findIndex((item) => item.name === this.selectedDiary);
       const response = await login.login(this.login, this.password,
-        'this.symbol', diary.diaries[index].url);
+        this.symbol, diary.diaries[index].url);
       this.$store.state.loginData = response.data;
       if (this.$store.state.loginData.data.students.data.length > 1) {
         this.$store.state.isLoading = false;
