@@ -1,6 +1,6 @@
 interface LoginForm {
-  login: String,
-  password: String,
-  domains: Array<String>,
-  selectedSymbol: String
+  login: string,
+  password: string,
+  domains: Array<string>,
+  selectedSymbol: string
 }
