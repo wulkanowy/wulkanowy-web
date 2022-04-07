@@ -23,8 +23,8 @@ npm install
 ## 2. Start the server
 
 ```sh
-cd backend/app
-py -m main.py
+cd backend
+py -m main
 ```
 And in frontend:
 ```sh

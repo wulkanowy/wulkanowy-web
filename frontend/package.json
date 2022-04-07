@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --openssl-legacy-provider",
+    "build": "vue-cli-service build --openssl-legacy-provider",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --openssl-legacy-provider"
   },
   "dependencies": {
     "axios": "^0.26.1",
