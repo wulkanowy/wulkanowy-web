@@ -24,4 +24,4 @@
             pip install -r .github/workflows/requirements.txt
         - name: Run tests
           working-directory: ./backend
-          run: python -m main.py
+          run: python main.py
