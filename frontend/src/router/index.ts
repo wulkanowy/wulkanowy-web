@@ -1,29 +1,31 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Login from '../views/Login.vue';
+import Login from '@/views/Login.vue';
+import Panel from '@/views/Panel.vue';
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Login',
-    component: Login,
+    component: Login
   },
   {
     path: '/user',
     name: 'User',
-    component: () => import('../views/Panel.vue'),
+    component: Panel
   },
   {
     path: '*',
-    name: 'Login',
-    component: () => import('../views/Login.vue'),
-  },
-];
+    redirect: '/',
+  }
+]
 
 const router = new VueRouter({
-  routes,
-});
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
+})
 
-export default router;
+export default router
