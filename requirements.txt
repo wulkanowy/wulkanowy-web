@@ -5,3 +5,8 @@ requests
 cryptography
 djangorestframework
 django-cors-headers
+pydantic~=1.9.0
+uvicorn~=0.17.5
+fastapi~=0.74.0
+starlette~=0.17.1
+lxml
