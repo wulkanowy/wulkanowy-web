@@ -76,7 +76,7 @@ export default Vue.extend({
     symbols: [],
     showPassword: false,
     rules: {
-      required: [value => !!value || 'This field is required'],
+      required: (value: string) => !!value || 'This field are required.'
     }
   }),
 
