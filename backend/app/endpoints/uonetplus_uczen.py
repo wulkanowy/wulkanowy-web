@@ -92,7 +92,6 @@ def get_grades(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
     path = paths.UCZEN.OCENY_GET
     response = get_response(data, path)
     subjects = []
-    print(response.json())
     descriptive_grades = []
     for subject in response.json()["data"]["Oceny"]:
         subject_grades = []
