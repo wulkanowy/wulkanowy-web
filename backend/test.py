@@ -19,7 +19,7 @@ def test_login_correct():
     assert response.status_code == 200
     assert response.json()["symbol"] == "powiatwulkanowy"
     assert response.json()["host"] == "fakelog.cf"
-    ciastka = response.json()["vulcan_cookies"]
+    ciastka1 = response.json()["vulcan_cookies"]
     #print(ciastka)
 
 def test_login_incorrect():
@@ -41,14 +41,12 @@ def test_symbol_incorrect():
         'detail': 'Symbol is incorrect'
     }
 
-#def test_email_not_assigned():
-    #response = client.post("/login",headers={"Content-Type": "application/json"},json={"username": "vulcantestowy@interia.pl", "password": "Marioneq1234", "host": "vulcan.net.pl", "symbol": "warszawa", "ssl": "false"},)
-    #assert response.status_code == 403
-    #print(response.json())
-    #assert response.json() == {}
-
-
-
-
-#vulcantestowy@interia.pl
-#Marioneq1234
+def test_notes():
+    response = client.post("/login",headers={"Content-Type": "application/json"},json={"username": "jan@fakelog.cf", "password": "jan123", "host": "fakelog.cf", "symbol": "powiatwulkanowy", "ssl": "false"},)
+    ciastka = response.json()["vulcan_cookies"]
+    response = client.post("/uonetplus-uczen/notes",headers={"Content-Type": "application/json"},json={{"vulcan_cookies": ciastka, "student": {"idBiezacyDziennik": "15", "idBiezacyUczen": "1", "idBiezacyDziennikPrzedszkole": "0", "biezacyRokSzkolny": "2018"}, "school_id": "123456", "host": "fakelog.cf", "symbol": "powiatwulkanowy","ssl": "false"}},)
+    assert response.status_code == 200
+    print(response.json())
+    assert response.json() == {
+        'detail': 'Symbol is incorrect'
+    }
