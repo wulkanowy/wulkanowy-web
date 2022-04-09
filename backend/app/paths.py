@@ -19,7 +19,6 @@ class UZYTKOWNIK:
 
 class UCZEN:
     START: str = "/{SYMBOL}/{SCHOOLID}/Start"
-    UCZENCACHE_GET: str = "/{SYMBOL}/{SCHOOLID}/UczenCache.mvc/Get"
     UCZENDZIENNIK_GET: str = "/{SYMBOL}/{SCHOOLID}/UczenDziennik.mvc/Get"
     OCENY_GET: str = "/{SYMBOL}/{SCHOOLID}/Oceny.mvc/Get"
     STATYSTYKI_GETOCENYCZASTKOWE: str = (
@@ -27,7 +26,4 @@ class UCZEN:
     )
     UWAGIIOSIAGNIECIA_GET: str = "/{SYMBOL}/{SCHOOLID}/UwagiIOsiagniecia.mvc/Get"
     ZEBRANIA_GET: str = "/{SYMBOL}/{SCHOOLID}/Zebrania.mvc/Get"
-    PLANZAJEC_GET: str = "/{SYMBOL}/{SCHOOLID}/PlanZajec.mvc/Get"
-    SPRAWDZIANY_GET: str = "/{SYMBOL}/{SCHOOLID}/Sprawdziany.mvc/Get"
-    HOMEWORK_GET: str = "/{SYMBOL}/{SCHOOLID}/Homework.mvc/Get"
-    REFRESHSESSION: str = "/{SYMBOL}/{SCHOOLID}/Home.mvc/RefreshSession"
+    SZKOLAINAUCZYCIELE_GET: str = "/{SYMBOL}/{SCHOOLID}/SzkolaINauczyciele.mvc/Get"

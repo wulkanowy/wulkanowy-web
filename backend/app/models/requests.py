@@ -15,4 +15,4 @@ class UonetPlusUczen(BaseModel):
     symbol: str
     host: str
     ssl: bool
-
+    payload: Optional[dict]
