@@ -19,3 +19,5 @@ def test_create_item():
     assert response.status_code == 200
     assert response.json()["symbol"] == "powiatwulkanowy"
     assert response.json()["host"] == "fakelog.cf"
+    ciastka = response.json()["vulcan_cookies"]
+    #print(ciastka)
