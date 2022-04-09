@@ -1,3 +1,4 @@
+from http import cookies
 from fastapi.testclient import TestClient
 import json
 from main import app
@@ -19,8 +20,6 @@ def test_login_correct():
     assert response.status_code == 200
     assert response.json()["symbol"] == "powiatwulkanowy"
     assert response.json()["host"] == "fakelog.cf"
-    ciastka1 = response.json()["vulcan_cookies"]
-    #print(ciastka)
 
 def test_login_incorrect():
     response = client.post("/login",headers={"Content-Type": "application/json"},json={"username": "cipanowie@pocz.pl", "password": "dupa123", "host": "fakelog.cf", "symbol": "powiatwulkanowy", "ssl": "false"},)
@@ -43,10 +42,14 @@ def test_symbol_incorrect():
 
 def test_notes():
     response = client.post("/login",headers={"Content-Type": "application/json"},json={"username": "jan@fakelog.cf", "password": "jan123", "host": "fakelog.cf", "symbol": "powiatwulkanowy", "ssl": "false"},)
-    ciastka = response.json()["vulcan_cookies"]
-    response = client.post("/uonetplus-uczen/notes",headers={"Content-Type": "application/json"},json={{"vulcan_cookies": ciastka, "student": {"idBiezacyDziennik": "15", "idBiezacyUczen": "1", "idBiezacyDziennikPrzedszkole": "0", "biezacyRokSzkolny": "2018"}, "school_id": "123456", "host": "fakelog.cf", "symbol": "powiatwulkanowy","ssl": "false"}},)
+    cookies = response.json()["vulcan_cookies"]
+    response = client.post("/uonetplus-uczen/notes",headers={"Content-Type": "application/json"},json={"vulcan_cookies": cookies, "student": {"idBiezacyDziennik": "15", "idBiezacyUczen": "1", "idBiezacyDziennikPrzedszkole": "0", "biezacyRokSzkolny": "2018"}, "school_id": "123456", "host": "fakelog.cf", "symbol": "powiatwulkanowy", "ssl": "false"},)
     assert response.status_code == 200
     print(response.json())
-    assert response.json() == {
-        'detail': 'Symbol is incorrect'
-    }
+    assert response.json()['notes'][0]['teacher'] == 'Karolina Kowalska [AN]'
+    assert response.json()['notes'][3]['content'] == 'Litwo! Ojczyzno moja! Ty jesteś jak zdrowie. Ile cię trzeba cenić, ten tylko aż kędy pieprz rośnie gdzie podział się? szukać prawodawstwa.'
+
+#def test_grades
+    #response = client.post("/login",headers={"Content-Type": "application/json"},json={"username": "jan@fakelog.cf", "password": "jan123", "host": "fakelog.cf", "symbol": "powiatwulkanowy", "ssl": "false"},)
+    #ciastka = response.json()["vulcan_cookies"]
+    
