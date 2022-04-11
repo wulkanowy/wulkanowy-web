@@ -9,10 +9,11 @@ class Login(BaseModel):
     ssl: Optional[bool]
 
 class UonetPlusUczen(BaseModel):
-    vulcan_cookies: object
-    student: object
-    school_id: str
-    symbol: str
     host: str
+    symbol: str
+    school_id: str
     ssl: bool
+    headers: object
+    student: object
+    vulcan_cookies: object
     payload: Optional[dict]

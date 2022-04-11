@@ -32,7 +32,6 @@ def get_notes(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
         notes=notes,
         achievements=response.json()["data"]["Osiagniecia"]
     )
-
     return notes_and_achievements
 
 @router.post("/uonetplus-uczen/school-info")
@@ -58,7 +57,6 @@ def get_school_info(data: models.UonetPlusUczen, key: str = Depends(cookie_sec))
         school=school,
         teachers=teachers
     )
-
     return school_info
 
 @router.post("/uonetplus-uczen/conferences")
@@ -83,7 +81,6 @@ def get_conferences(data: models.UonetPlusUczen, key: str = Depends(cookie_sec))
             date=date.strftime('%d.%m.%Y %H:%M')
         )
         conferences.append(conference)
-
     return conferences
 
 @router.post("/uonetplus-uczen/grades")
@@ -131,8 +128,43 @@ def get_grades(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
         subjects=subjects,
         descriptive_grades=descriptive_grades
     )
-
     return grades
+
+@router.post("/uonetplus-uczen/mobile-access/get-registered-devices")
+def get_registered_devices(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
+    data.vulcan_cookies = encrypt_cookies(key, data.vulcan_cookies)
+    path = paths.UCZEN.ZAREJESTROWANEURZADZENIA_GET
+    response = get_response(data, path)
+    registered_devices = []
+    print(response.json()["data"])
+    for device in response.json()["data"]:
+        device = models.Device(
+            id=device["Id"],
+            name=device["NazwaUrzadzenia"],
+            create_date=datetime.fromisoformat(device["DataUtworzenia"]).strftime('%d.%m.%Y %H:%M')
+        )
+        registered_devices.append(device)
+    return registered_devices
+
+@router.post("/uonetplus-uczen/mobile-access/register-device")
+def get_register_device_token(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
+    data.vulcan_cookies = encrypt_cookies(key, data.vulcan_cookies)
+    path = paths.UCZEN.REJESTRACJAURZADZENIATOKEN_GET
+    response = get_response(data, path)
+    token_response = models.TokenResponse(
+        token=response.json()["data"]["TokenKey"],
+        symbol=response.json()["data"]["CustomerGroup"],
+        pin=response.json()["data"]["PIN"],
+        qr_code_image=response.json()["data"]["QrCodeImage"]
+    )
+    return token_response
+
+@router.post("/uonetplus-uczen/mobile-access/delete-registered-device")
+def get_register_device_token(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
+    data.vulcan_cookies = encrypt_cookies(key, data.vulcan_cookies)
+    path = paths.UCZEN.ZAREJESTROWANEURZADZENIA_DELETE
+    response = get_response(data, path)
+    return response.json()
 
 def build_url(subd: str = None, host: str = None, path: str = None, ssl: bool = True, **kwargs):
     if ssl:
@@ -155,12 +187,6 @@ def build_url(subd: str = None, host: str = None, path: str = None, ssl: bool = 
 
 def get_response(data, path):
     session = requests.Session()
-    headers = {
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept": "*/*",
-        "Connection": "keep-alive",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"
-    }
     data.vulcan_cookies.update(data.student)
     url = build_url(
         subd="uonetplus-uczen",
@@ -172,7 +198,7 @@ def get_response(data, path):
     )
     response = session.post(
         url=url,
-        headers=headers,
+        headers=data.headers,
         json=data.payload,
         cookies=data.vulcan_cookies,
     )

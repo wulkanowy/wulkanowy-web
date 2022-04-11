@@ -32,4 +32,5 @@ class Student(BaseModel):
     school_name: str
     school_symbol: str
     cookies: object
+    headers: object
     semesters: list

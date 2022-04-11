@@ -113,7 +113,10 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                 schoolid=id,
             )
             page = session.get(url)
-            name = get_script_param(page.text, "organizationName")
+            school_name = get_script_param(page.text, "organizationName")
+            anti_forgery_token = get_script_param(page.text, "antiForgeryToken")
+            app_guid = get_script_param(page.text, "appGuid")
+            version = get_script_param(page.text, "version")
             url = build_url(
                 subd="uonetplus-uczen",
                 path=paths.UCZEN.UCZENDZIENNIK_GET,
@@ -125,6 +128,14 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
             students_response = session.post(url)
             for student in students_response.json()["data"]:
                 semesters = []
+                headers = {
+                    "Accept": "*/*",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Connection": "keep-alive",
+                    "X-V-AppVersion": version,
+                    "X-V-AppGuid": app_guid,
+                    "X-V-RequestVerificationToken": anti_forgery_token
+                }
                 for semester in student["Okresy"]:
                     semester = models.Semester(
                         number=semester["NumerOkresu"],
@@ -155,13 +166,14 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                     full_name=student["UczenPelnaNazwa"],
                     school_id=id,
                     school_symbol=symbol,
-                    school_name=name,
+                    school_name=school_name,
                     cookies={
                         "idBiezacyDziennik": str(student["IdDziennik"]),
                         "idBiezacyUczen": str(student["IdUczen"]),
                         "idBiezacyDziennikPrzedszkole": str(student["IdPrzedszkoleDziennik"]),
                         "biezacyRokSzkolny": str(student["DziennikRokSzkolny"])
                     },
+                    headers=headers,
                     semesters=semesters
                 )
                 students.append(student)
