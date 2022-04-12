@@ -22,18 +22,16 @@ def main(data: models.Login, response: Response):
 
 
 def send_credentials(username: str, password: str, symbol: str, host: str, ssl: bool, session):
-    realm = build_url(
-        subd="uonetplus", host=host, ssl=ssl
-    )
+    realm = build_url(subd="uonetplus", host=host, ssl=ssl)
     url = build_url(
         subd="cufs",
         host=host,
         path=paths.CUFS.START,
         realm=quote(quote(realm, safe=""), safe=""),
         symbol=symbol,
-        ssl=ssl
+        ssl=ssl,
     )
-    data = {'LoginName': username, 'Password': password}
+    data = {"LoginName": username, "Password": password}
     page = session.post(url, data)
     soup = BeautifulSoup(page.text, "lxml")
     s = soup.select(".ErrorMessage, #ErrorTextLabel, #loginArea #errorText")
@@ -41,8 +39,7 @@ def send_credentials(username: str, password: str, symbol: str, host: str, ssl: 
         msg = re.sub(r"\s+", " ", tag.text).strip()
         if msg:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail='Username or password is incorrect'
+                status_code=status.HTTP_403_FORBIDDEN, detail="Username or password is incorrect"
             )
     wa: str = soup.select('input[name="wa"]')[0]["value"]
     wresult: str = soup.select('input[name="wresult"]')[0]["value"]
@@ -55,11 +52,11 @@ def send_credentials(username: str, password: str, symbol: str, host: str, ssl: 
 
 def build_url(subd: str = None, host: str = None, path: str = None, ssl: bool = True, **kwargs):
     if ssl:
-        url = 'https://'
+        url = "https://"
     else:
-        url = 'http://'
+        url = "http://"
     if subd:
-        url += subd + '.'
+        url += subd + "."
     url += str(host)
     if path:
         url += path
@@ -70,6 +67,7 @@ def build_url(subd: str = None, host: str = None, path: str = None, ssl: bool = 
         url = url.replace(f"{{{k.upper()}}}", str(kwargs[k]))
 
     return url
+
 
 def get_cookies(ssl: bool, host: str, symbol: str, session, students, response):
     key = Fernet.generate_key().decode("utf-8")
@@ -82,7 +80,7 @@ def get_cookies(ssl: bool, host: str, symbol: str, session, students, response):
         "vulcan_cookies": cookies,
         "symbol": symbol,
         "host": host,
-        "ssl": ssl
+        "ssl": ssl,
     }
 
     return data
@@ -90,19 +88,17 @@ def get_cookies(ssl: bool, host: str, symbol: str, session, students, response):
 
 def get_students(symbol: str, host: str, ssl: bool, cers, session):
     students = []
-    url = build_url(
-        subd="uonetplus", path=paths.UONETPLUS.START, symbol=symbol, host=host, ssl=ssl
-    )
+    url = build_url(subd="uonetplus", path=paths.UONETPLUS.START, symbol=symbol, host=host, ssl=ssl)
     crtr = session.post(
         url=url,
-        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"},
-        data=cers
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0"
+        },
+        data=cers,
     )
-    if not 'nie został zarejestrowany' in crtr.text:
+    if not "nie został zarejestrowany" in crtr.text:
         soup = BeautifulSoup(crtr.text, "lxml")
-        tags = soup.select(
-            '.panel.linkownia.pracownik.klient a[href*="uonetplus-uczen"]'
-        )
+        tags = soup.select('.panel.linkownia.pracownik.klient a[href*="uonetplus-uczen"]')
         for a in tags:
             id = a["href"].split("/")[4]
             url = build_url(
@@ -123,7 +119,7 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                 symbol=symbol,
                 host=host,
                 schoolid=id,
-                ssl=ssl
+                ssl=ssl,
             )
             students_response = session.post(url)
             for student in students_response.json()["data"]:
@@ -134,7 +130,7 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                     "Connection": "keep-alive",
                     "X-V-AppVersion": version,
                     "X-V-AppGuid": app_guid,
-                    "X-V-RequestVerificationToken": anti_forgery_token
+                    "X-V-RequestVerificationToken": anti_forgery_token,
                 }
                 for semester in student["Okresy"]:
                     semester = models.Semester(
@@ -145,7 +141,7 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                         class_id=semester["IdOddzial"],
                         unit_id=semester["IdJednostkaSprawozdawcza"],
                         current=semester["IsLastOkres"],
-                        id=semester["Id"]
+                        id=semester["Id"],
                     )
                     semesters.append(semester)
                 student = models.Student(
@@ -171,18 +167,16 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                         "idBiezacyDziennik": str(student["IdDziennik"]),
                         "idBiezacyUczen": str(student["IdUczen"]),
                         "idBiezacyDziennikPrzedszkole": str(student["IdPrzedszkoleDziennik"]),
-                        "biezacyRokSzkolny": str(student["DziennikRokSzkolny"])
+                        "biezacyRokSzkolny": str(student["DziennikRokSzkolny"]),
                     },
                     headers=headers,
-                    semesters=semesters
+                    semesters=semesters,
                 )
                 students.append(student)
     else:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='Symbol is incorrect'
-        )
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Symbol is incorrect")
     return students
+
 
 def get_script_param(text: str, param: str, default: str = None) -> str:
     m = re.search(f"{param}: '(.+?)'", text)

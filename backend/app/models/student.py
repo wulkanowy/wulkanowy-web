@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+
 class Semester(BaseModel):
     number: int
     level: int
@@ -11,6 +12,7 @@ class Semester(BaseModel):
     unit_id: int
     current: bool
     id: int
+
 
 class Student(BaseModel):
     id: int
