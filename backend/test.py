@@ -1,7 +1,8 @@
 from fastapi.testclient import TestClient
 from main import app
-
+from sty import fg, bg, ef, rs, Style, RgbFg
 client = TestClient(app)
+fg.orange = Style(RgbFg(255, 150, 50))
 # Ustawienia dla wszystkich testów
 nick = "jan@fakelog.cf"
 password = "jan123"
@@ -26,7 +27,8 @@ def test_login_correct():
     student = login.json()["students"][0]["cookies"]
     school_id = login.json()["students"][0]["school_id"]
     assert login.status_code == 200
-    # print(login.json())
+    #print(login.json())
+    print(fg.orange + 'Yay, Im orange.' + fg.rs)
     assert login.json()["symbol"] == "powiatwulkanowy"
     assert login.json()["host"] == "fakelog.cf"
 
@@ -41,10 +43,12 @@ def test_login_incorrect():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
+            "json": {},
+            "headers": headars,
         },
     )
     assert response.status_code == 403
-    # print(response.json())
+    #print(response.json())
     assert response.json() == {"detail": "Username or password is incorrect"}
 
 
@@ -58,10 +62,12 @@ def test_symbol_incorrect():
             "host": host,
             "symbol": symbol_invalid,
             "ssl": ssl,
+            "json": {},
+            "headers": headars,
         },
     )
     assert response.status_code == 403
-    # print(response.json())
+    #print(response.json())
     assert response.json() == {"detail": "Symbol is incorrect"}
 
 
@@ -76,10 +82,12 @@ def test_notes():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
+            "json": {},
+            "headers": headars,
         },
     )
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
     assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
     assert (
         response.json()["notes"][3]["content"]
@@ -99,13 +107,14 @@ def test_grades():
             "symbol": symbol,
             "ssl": ssl,
             "json": {"okres": 16},
+            "headers": headars,
         },
     )
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
     assert response.json()["subjects"][0]["grades"][0]["teacher"] == "Karolina Kowalska"
     assert response.json()["subjects"][0]["grades"][0]["symbol"] == "Akt"
-    # assert response.json()['grades'][3]['grade'] == '4'
+    #assert response.json()['grades'][3]['grade'] == '4'
 
 
 def test_school_info():
@@ -119,10 +128,12 @@ def test_school_info():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
+            "json": {},
+            "headers": headars,
         },
     )
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
 
 
 def test_conference():
@@ -136,10 +147,12 @@ def test_conference():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
+            "json": {},
+            "headers": headars,
         },
     )
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
 
 
 def test_mobile_access_registed():
@@ -153,10 +166,12 @@ def test_mobile_access_registed():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
+            "json": {},
+            "headers": headars,
         },
     )
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
 
 
 def test_mobile_access_register():
@@ -173,7 +188,7 @@ def test_mobile_access_register():
         },
     )
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
 
 
 def test_mobile_access_delete_registed():
@@ -197,4 +212,4 @@ def test_mobile_access_delete_registed():
     # else:
     #    print("Test")
     assert response.status_code == 200
-    # print(response.json())
+    #print(response.json())
