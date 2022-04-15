@@ -37,13 +37,14 @@ def test_login_correct():
     school_id = login.json()["students"][0]["school_id"]
     assert login.status_code == 200
     #print(login.json())
-    if len(cookies) == 0:
+    #if len(cookies) == 0:
+    if not cookies:
         #print(fg.lightgreen + "OK" + login.status_code + rs)
         global errorcode
         errorcode = 1
         print("\nCookies output: ")
         print(login.json()["vulcan_cookies"])
-        pytest.skip("No VULCAN cookies detected")
+        pytest.fail("No VULCAN cookies detected")
     else:
         #print(fg.orange + "OK" + login.status_code + rs)
         assert login.status_code == 200
@@ -233,7 +234,7 @@ def test_mobile_access_register():
 
 def test_mobile_access_delete_registed():
     if errorcode == 1:
-        pytest.fail("Skipped due to no cookies detected")
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/delete-registered-device",
         headers={"Content-Type": "application/json"},
@@ -257,6 +258,3 @@ def test_mobile_access_delete_registed():
     #print(response.json())
     assert response.json()["success"] == True
     #assert response.json()["data"]
-def test_workflow_code_return():
-    if errorcode == 1:
-        pytest.fail("Skipped due to no cookies detected")
