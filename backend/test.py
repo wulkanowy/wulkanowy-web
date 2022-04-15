@@ -3,12 +3,18 @@ from main import app
 from sty import fg, bg, ef, rs, Style, RgbFg
 client = TestClient(app)
 fg.orange = Style(RgbFg(255, 150, 50))
+fg.lightgreen = Style(RgbFg(144, 238, 144))
+
 # Ustawienia dla wszystkich testów
 nick = "jan@fakelog.cf"
 password = "jan123"
 host = "fakelog.cf"
 symbol = "powiatwulkanowy"
 ssl = "false"
+# Ustawienia tygodni dla testów
+week_grades = "16"
+# Ustawienia id dla testów
+id_mobile_deleted = 1234
 # Ustawienia dla test_login_incorrect i test_symbol_incorrect
 nick_invalid = "jan@fakelog.cf"
 password_invalid = "Jan321"
@@ -28,7 +34,8 @@ def test_login_correct():
     school_id = login.json()["students"][0]["school_id"]
     assert login.status_code == 200
     #print(login.json())
-    print(fg.orange + 'Yay, Im orange.' + fg.rs)
+    #if login.status_code == 200:
+        #print(fg.lightgreen + "OK" + login.status_code + rs)
     assert login.json()["symbol"] == "powiatwulkanowy"
     assert login.json()["host"] == "fakelog.cf"
 
@@ -106,7 +113,7 @@ def test_grades():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
-            "json": {"okres": 16},
+            "json": {"okres": week_grades},
             "headers": headars,
         },
     )
@@ -134,6 +141,8 @@ def test_school_info():
     )
     assert response.status_code == 200
     #print(response.json())
+    assert response.json()["school"]["name"] == "Publiczna szkoła Wulkanowego nr 1 w fakelog.cf"
+    assert response.json()["teachers"][0]["name"] == "Karolina Kowalska [AN]"
 
 
 def test_conference():
@@ -153,7 +162,8 @@ def test_conference():
     )
     assert response.status_code == 200
     #print(response.json())
-
+    assert response.json()[0]["subject"] == "Podsumowanie I semestru - średnia klasy, oceny, frekwencja, zachowanie."
+    assert response.json()[1]["date"] == "06.09.2019 16:30"
 
 def test_mobile_access_registed():
     response = client.post(
@@ -172,6 +182,8 @@ def test_mobile_access_registed():
     )
     assert response.status_code == 200
     #print(response.json())
+    assert response.json()[0]["name"] == "To Be Filled By O.E.M.#To Be Filled By O.E.M. (Windows 8.1)"
+    assert response.json()[1]["id"] == 1234
 
 
 def test_mobile_access_register():
@@ -189,7 +201,8 @@ def test_mobile_access_register():
     )
     assert response.status_code == 200
     #print(response.json())
-
+    assert response.json()["pin"] == "999999"
+    assert response.json()["qr_code_image"]
 
 def test_mobile_access_delete_registed():
     response = client.post(
@@ -202,7 +215,7 @@ def test_mobile_access_delete_registed():
             "host": host,
             "symbol": symbol,
             "ssl": ssl,
-            "json": {"id": 1},
+            "json": {"id": id_mobile_deleted},
             "headers": headars,
         },
     )
@@ -213,3 +226,5 @@ def test_mobile_access_delete_registed():
     #    print("Test")
     assert response.status_code == 200
     #print(response.json())
+    assert response.json()["success"] == True
+    #assert response.json()["data"]

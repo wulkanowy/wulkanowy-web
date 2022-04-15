@@ -13,6 +13,7 @@
 ## 1. Install dependencies
 
 ```sh
+cd backend
 pip install -r requirements.txt
 ```
 And in frontend:

@@ -132,7 +132,6 @@ def get_registered_devices(data: models.UonetPlusUczen, key: str = Depends(cooki
     path = paths.UCZEN.ZAREJESTROWANEURZADZENIA_GET
     response = get_response(data, path)
     registered_devices = []
-    print(response.json()["data"])
     for device in response.json()["data"]:
         device = models.Device(
             id=device["Id"],
