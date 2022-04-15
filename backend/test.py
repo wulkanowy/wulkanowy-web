@@ -1,6 +1,9 @@
+from errno import errorcode
 from fastapi.testclient import TestClient
+from pyparsing import empty
 from main import app
 from sty import fg, bg, ef, rs, Style, RgbFg
+import pytest
 client = TestClient(app)
 fg.orange = Style(RgbFg(255, 150, 50))
 fg.lightgreen = Style(RgbFg(144, 238, 144))
@@ -34,13 +37,23 @@ def test_login_correct():
     school_id = login.json()["students"][0]["school_id"]
     assert login.status_code == 200
     #print(login.json())
-    #if login.status_code == 200:
+    if len(cookies) == 0:
         #print(fg.lightgreen + "OK" + login.status_code + rs)
+        global errorcode
+        errorcode = 1
+        print("\nCookies output: ")
+        print(login.json()["vulcan_cookies"])
+        pytest.skip("No VULCAN cookies detected")
+    else:
+        #print(fg.orange + "OK" + login.status_code + rs)
+        assert login.status_code == 200
     assert login.json()["symbol"] == "powiatwulkanowy"
     assert login.json()["host"] == "fakelog.cf"
 
 
 def test_login_incorrect():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/login",
         headers={"Content-Type": "application/json"},
@@ -60,6 +73,8 @@ def test_login_incorrect():
 
 
 def test_symbol_incorrect():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/login",
         headers={"Content-Type": "application/json"},
@@ -79,6 +94,8 @@ def test_symbol_incorrect():
 
 
 def test_notes():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/notes",
         headers={"Content-Type": "application/json"},
@@ -103,6 +120,8 @@ def test_notes():
 
 
 def test_grades():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/grades",
         headers={"Content-Type": "application/json"},
@@ -125,6 +144,8 @@ def test_grades():
 
 
 def test_school_info():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/school-info",
         headers={"Content-Type": "application/json"},
@@ -146,6 +167,8 @@ def test_school_info():
 
 
 def test_conference():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")   
     response = client.post(
         "/uonetplus-uczen/conferences",
         headers={"Content-Type": "application/json"},
@@ -166,6 +189,8 @@ def test_conference():
     assert response.json()[1]["date"] == "06.09.2019 16:30"
 
 def test_mobile_access_registed():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/get-registered-devices",
         headers={"Content-Type": "application/json"},
@@ -187,6 +212,8 @@ def test_mobile_access_registed():
 
 
 def test_mobile_access_register():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/register-device",
         headers={"Content-Type": "application/json"},
@@ -205,6 +232,8 @@ def test_mobile_access_register():
     assert response.json()["qr_code_image"]
 
 def test_mobile_access_delete_registed():
+    if errorcode == 1:
+        pytest.skip("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/delete-registered-device",
         headers={"Content-Type": "application/json"},

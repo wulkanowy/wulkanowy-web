@@ -73,11 +73,11 @@ def get_cookies(ssl: bool, host: str, symbol: str, session, students, response):
     key = Fernet.generate_key().decode("utf-8")
     fernet = Fernet(bytes(key, "utf-8"))
     vulcan_cookies = session.cookies.get_dict()
-    cookies = fernet.encrypt(str(vulcan_cookies).encode("utf-8"))
+    #cookies = fernet.encrypt(str(vulcan_cookies).encode("utf-8"))
     response.set_cookie(key="key", value=key, max_age=1200)
     data = {
         "students": students,
-        "vulcan_cookies": cookies,
+        "vulcan_cookies": [],
         "symbol": symbol,
         "host": host,
         "ssl": ssl,
