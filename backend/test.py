@@ -233,7 +233,7 @@ def test_mobile_access_register():
 
 def test_mobile_access_delete_registed():
     if errorcode == 1:
-        pytest.skip("Skipped due to no cookies detected")
+        pytest.fail("Skipped due to no cookies detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/delete-registered-device",
         headers={"Content-Type": "application/json"},
@@ -257,3 +257,6 @@ def test_mobile_access_delete_registed():
     #print(response.json())
     assert response.json()["success"] == True
     #assert response.json()["data"]
+def test_workflow_code_return():
+    if errorcode == 1:
+        pytest.fail("Skipped due to no cookies detected")
