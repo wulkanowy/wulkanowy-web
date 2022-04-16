@@ -1,13 +1,13 @@
 from errno import errorcode
+from re import L
 from fastapi.testclient import TestClient
-from pyparsing import empty
 from main import app
 from sty import fg, bg, ef, rs, Style, RgbFg
 import pytest
 client = TestClient(app)
 fg.orange = Style(RgbFg(255, 150, 50))
 fg.lightgreen = Style(RgbFg(144, 238, 144))
-
+fg.red = Style(RgbFg(255, 0, 0))
 # Ustawienia dla wszystkich testów
 nick = "jan@fakelog.cf"
 password = "jan123"
@@ -35,9 +35,33 @@ def test_login_correct():
     headars = login.json()["students"][0]["headers"]
     student = login.json()["students"][0]["cookies"]
     school_id = login.json()["students"][0]["school_id"]
-    assert login.status_code == 200
+    #assert login.status_code == 200
     #print(login.json())
-    #if len(cookies) == 0:
+    if login.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(login.status_code) + fg.rs)
+    elif login.status_code == 400:
+        print(fg.red + "\nBad Request " + str(login.status_code) + fg.rs)
+        print(login.json())
+    elif login.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(login.status_code) + fg.rs)
+    elif login.status_code == 403:
+        print(fg.red + "\nForbidden " + str(login.status_code) + fg.rs)
+    elif login.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(login.status_code) + fg.rs)
+    elif login.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(login.status_code) + fg.rs)
+        print(login.json())
+    elif login.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(login.status_code) + fg.rs)
+        print(login.json())
+    elif login.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(login.status_code) + fg.rs)
+    elif login.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(login.status_code) + fg.rs)
+    elif login.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(login.status_code) + fg.rs)
+    elif login.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(login.status_code) + fg.rs)
     if not cookies:
         #print(fg.lightgreen + "OK" + login.status_code + rs)
         global errorcode
@@ -45,6 +69,24 @@ def test_login_correct():
         print("\nCookies output: ")
         print(login.json()["vulcan_cookies"])
         pytest.fail("No VULCAN cookies detected")
+    elif not headars:
+        #print(fg.lightgreen + "OK" + login.status_code + rs)
+        errorcode = 2
+        print("\nHeaders output: ")
+        print(login.json()["students"][0]["headers"])
+        pytest.fail("No headers detected")
+    elif not student:
+        #print(fg.lightgreen + "OK" + login.status_code + rs)
+        errorcode = 3
+        print("\nStudent output: ")
+        print(login.json()["students"][0]["cookies"])
+        pytest.fail("No student cookies detected")
+    elif not school_id:
+        #print(fg.lightgreen + "OK" + login.status_code + rs)
+        errorcode = 4
+        print("\nSchool ID output: ")
+        print(login.json()["students"][0]["school_id"])
+        pytest.fail("No school ID detected")
     else:
         #print(fg.orange + "OK" + login.status_code + rs)
         assert login.status_code == 200
@@ -55,6 +97,12 @@ def test_login_correct():
 def test_login_incorrect():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/login",
         headers={"Content-Type": "application/json"},
@@ -68,7 +116,32 @@ def test_login_incorrect():
             "headers": headars,
         },
     )
-    assert response.status_code == 403
+    #assert response.status_code == 403
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json() == {"detail": "Username or password is incorrect"}
 
@@ -76,6 +149,12 @@ def test_login_incorrect():
 def test_symbol_incorrect():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/login",
         headers={"Content-Type": "application/json"},
@@ -89,7 +168,32 @@ def test_symbol_incorrect():
             "headers": headars,
         },
     )
-    assert response.status_code == 403
+    #assert response.status_code == 403
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json() == {"detail": "Symbol is incorrect"}
 
@@ -97,6 +201,12 @@ def test_symbol_incorrect():
 def test_notes():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/notes",
         headers={"Content-Type": "application/json"},
@@ -111,7 +221,32 @@ def test_notes():
             "headers": headars,
         },
     )
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
     assert (
@@ -123,6 +258,12 @@ def test_notes():
 def test_grades():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/grades",
         headers={"Content-Type": "application/json"},
@@ -137,7 +278,32 @@ def test_grades():
             "headers": headars,
         },
     )
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()["subjects"][0]["grades"][0]["teacher"] == "Karolina Kowalska"
     assert response.json()["subjects"][0]["grades"][0]["symbol"] == "Akt"
@@ -147,6 +313,12 @@ def test_grades():
 def test_school_info():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/school-info",
         headers={"Content-Type": "application/json"},
@@ -161,7 +333,32 @@ def test_school_info():
             "headers": headars,
         },
     )
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()["school"]["name"] == "Publiczna szkoła Wulkanowego nr 1 w fakelog.cf"
     assert response.json()["teachers"][0]["name"] == "Karolina Kowalska [AN]"
@@ -169,7 +366,13 @@ def test_school_info():
 
 def test_conference():
     if errorcode == 1:
-        pytest.skip("Skipped due to no cookies detected")   
+        pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")   
     response = client.post(
         "/uonetplus-uczen/conferences",
         headers={"Content-Type": "application/json"},
@@ -184,7 +387,32 @@ def test_conference():
             "headers": headars,
         },
     )
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()[0]["subject"] == "Podsumowanie I semestru - średnia klasy, oceny, frekwencja, zachowanie."
     assert response.json()[1]["date"] == "06.09.2019 16:30"
@@ -192,6 +420,12 @@ def test_conference():
 def test_mobile_access_registed():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/get-registered-devices",
         headers={"Content-Type": "application/json"},
@@ -206,7 +440,32 @@ def test_mobile_access_registed():
             "headers": headars,
         },
     )
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()[0]["name"] == "To Be Filled By O.E.M.#To Be Filled By O.E.M. (Windows 8.1)"
     assert response.json()[1]["id"] == 1234
@@ -215,6 +474,12 @@ def test_mobile_access_registed():
 def test_mobile_access_register():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/register-device",
         headers={"Content-Type": "application/json"},
@@ -227,7 +492,32 @@ def test_mobile_access_register():
             "ssl": ssl,
         },
     )
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()["pin"] == "999999"
     assert response.json()["qr_code_image"]
@@ -235,6 +525,12 @@ def test_mobile_access_register():
 def test_mobile_access_delete_registed():
     if errorcode == 1:
         pytest.skip("Skipped due to no cookies detected")
+    elif errorcode == 2:
+        pytest.skip("Skipped due to no headers detected")
+    elif errorcode == 3:
+        pytest.skip("Skipped due to no student cookies detected")
+    elif errorcode == 4:
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/mobile-access/delete-registered-device",
         headers={"Content-Type": "application/json"},
@@ -254,7 +550,32 @@ def test_mobile_access_delete_registed():
     #    print(response.json())
     # else:
     #    print("Test")
-    assert response.status_code == 200
+    #assert response.status_code == 200
+    if response.status_code == 200:
+        print(fg.lightgreen + "\nOK " + str(response.status_code) + fg.rs)
+    elif response.status_code == 400:
+        print(fg.red + "\nBad Request " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 401:
+        print(fg.red + "\nUnauthorized " + str(response.status_code) + fg.rs)
+    elif response.status_code == 403:
+        print(fg.red + "\nForbidden " + str(response.status_code) + fg.rs)
+    elif response.status_code == 404:
+        print(fg.orange + "\nNot Found " + str(response.status_code) + fg.rs)
+    elif response.status_code == 405:
+        print(fg.red + "\nMethod Not Allowed " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 422:
+        print(fg.red + "\nUnprocessable Entity " + str(response.status_code) + fg.rs)
+        print(response.json())
+    elif response.status_code == 500:
+        print(fg.orange + "\nInternal Server Error " + str(response.status_code) + fg.rs)
+    elif response.status_code == 502:
+        print(fg.orange + "\nBad Gateway " + str(response.status_code) + fg.rs)
+    elif response.status_code == 503:
+        print(fg.orange + "\nService Unavailable " + str(response.status_code) + fg.rs)
+    elif response.status_code == 504:
+        print(fg.orange + "\nGateway Timeout " + str(response.status_code) + fg.rs)
     #print(response.json())
     assert response.json()["success"] == True
     #assert response.json()["data"]
