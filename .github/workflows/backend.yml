@@ -1,5 +1,7 @@
     name: Backend
     on: [push]
+    env:
+      PYTEST_ADDOPTS: "--color=yes"
     jobs:
       build:
         runs-on: ubuntu-latest
