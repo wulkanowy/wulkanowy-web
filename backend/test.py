@@ -5,8 +5,8 @@ import pytest
 client = TestClient(app)
 class fg:
     lightgreen = '\x1B[38;5;46m'
-    orange = "\x1B[38;5;208m"
-    red = "\x1B[38;5;160m"
+    orange = '\x1B[38;5;208m'
+    red = '\x1B[38;5;160m'
     rs = '\033[0m'
 # Ustawienia dla wszystkich testów
 nick = "jan@fakelog.cf"
@@ -39,7 +39,7 @@ def test_login_correct():
     #print("\x1B[38;5;1mTest " + str(login.status_code))
     #print("\x1B[38;5;91mTest")
     if login.status_code == 200:
-        print(fg.lightgreen + "\nOK " + str(login.status_code) + fg.rs)
+        print("\n" + fg.lightgreen + "OK " + str(login.status_code) + fg.rs)
     elif login.status_code == 400:
         print(fg.red + "\nBad Request " + str(login.status_code) + fg.rs)
         print(login.json())
