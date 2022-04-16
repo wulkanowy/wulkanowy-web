@@ -1,12 +1,13 @@
-from traceback import print_tb
+from errno import errorcode
 from fastapi.testclient import TestClient
 from main import app
-from sty import fg, bg, ef, rs, Style, RgbFg
 import pytest
 client = TestClient(app)
-fg.orange = Style(RgbFg(255, 150, 50))
-fg.lightgreen = Style(RgbFg(144, 238, 144))
-fg.red = Style(RgbFg(255, 0, 0))
+class fg:
+    lightgreen = '\x1B[38;5;46m'
+    orange = "\x1B[38;5;208m"
+    red = "\x1B[38;5;160m"
+    rs = '\033[0m'
 # Ustawienia dla wszystkich testów
 nick = "jan@fakelog.cf"
 password = "jan123"
@@ -35,10 +36,8 @@ def test_login_correct():
     school_id = login.json()["students"][0]["school_id"]
     #assert login.status_code == 200
     #print(login.json())
-    #print(Fore.GREEN + "\nTest " + str(login.status_code))
-    #print(Fore.YELLOW + "\nTest " + str(login.status_code))
     #print("\x1B[38;5;1mTest " + str(login.status_code))
-    print("\x1B[38;5;91mTest")
+    #print("\x1B[38;5;91mTest")
     if login.status_code == 200:
         print(fg.lightgreen + "\nOK " + str(login.status_code) + fg.rs)
     elif login.status_code == 400:
