@@ -24,6 +24,38 @@ nick_invalid = "jan@fakelog.cf"
 password_invalid = "Jan321"
 symbol_invalid = "warszawa"
 
+def status_check(): 
+    if status_check_code == 200:
+        global status_check_response, status_check_json
+        status_check_response = print("\n" + fg.lightgreen + "OK " + str(status_check_code) + fg.rs)
+    elif status_check_code == 400:
+        status_check_response = print("\n" + fg.red + "Bad Request " + str(status_check_code) + fg.rs)
+        formatted_string = json.dumps(json.loads(status_check_json), indent=4)
+        print(formatted_string)
+    elif status_check_code == 401:
+        status_check_response = print("\n" + fg.red + "Unauthorized " + str(status_check_code) + fg.rs)
+    elif status_check_code == 403:
+        status_check_response = print("\n" + fg.red + "Forbidden " + str(status_check_code) + fg.rs)
+    elif status_check_code == 404:
+        status_check_response = print("\n" + fg.orange + "Not Found " + str(status_check_code) + fg.rs)
+    elif status_check_code == 405:
+        status_check_response = print("\n" + fg.red + "Method Not Allowed " + str(status_check_code) + fg.rs)
+        formatted_string = json.dumps(json.loads(status_check_json), indent=4)
+        print(formatted_string)
+    elif status_check_code == 422:
+        status_check_response = print("\n" + fg.red + "Unprocessable Entity " + str(status_check_code) + fg.rs)
+        formatted_string = json.dumps(json.loads(status_check_json), indent=4)
+        print(formatted_string)
+    elif status_check_code == 500:
+        status_check_response = print("\n" + fg.orange + "Internal Server Error " + str(status_check_code) + fg.rs)
+    elif status_check_code == 502:
+        status_check_response = print("\n" + fg.orange + "Bad Gateway " + str(status_check_code) + fg.rs)
+    elif status_check_code == 503:
+        status_check_response = print("\n" + fg.orange + "Service Unavailable " + str(status_check_code) + fg.rs)
+    elif status_check_code == 504:
+        status_check_response = print("\n" + fg.orange + "Gateway Timeout " + str(status_check_code) + fg.rs)
+    return status_check_response
+
 def test_login_correct():
     login = client.post(
         "/login",
@@ -111,36 +143,15 @@ def test_login_incorrect():
             "headers": headars,
         },
     )
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
+    global status_check_code
+    status_check_json = response.json()
+    status_check_code = response.status_code
+    status_check()
+    """
     elif response.status_code == 403:
         print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
         assert response.json() == {"detail": "Username or password is incorrect"}
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
-    #print(response.json())
+    """
 
 
 def test_symbol_incorrect():
@@ -165,37 +176,15 @@ def test_symbol_incorrect():
             "headers": headars,
         },
     )
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
+    """
     elif response.status_code == 403:
         print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
         assert response.json() == {"detail": "Symbol is incorrect"}
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
-    #print(response.json())
-
+    print(response.json())
+    """
 
 def test_notes():
     if errorcode == 1:
@@ -220,6 +209,10 @@ def test_notes():
             "headers": headars,
         },
     )
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
@@ -227,32 +220,7 @@ def test_notes():
         response.json()["notes"][3]["content"]
         == "Litwo! Ojczyzno moja! Ty jesteś jak zdrowie. Ile cię trzeba cenić, ten tylko aż kędy pieprz rośnie gdzie podział się? szukać prawodawstwa."
         )
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
 
 def test_grades():
@@ -278,36 +246,15 @@ def test_grades():
             "headers": headars,
         },
     )
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["subjects"][0]["grades"][0]["teacher"] == "Karolina Kowalska"
         assert response.json()["subjects"][0]["grades"][0]["symbol"] == "Akt"
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
     #assert response.json()['grades'][3]['grade'] == '4'
 
@@ -335,36 +282,15 @@ def test_school_info():
             "headers": headars,
         },
     )
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["school"]["name"] == "Publiczna szkoła Wulkanowego nr 1 w fakelog.cf"
         assert response.json()["teachers"][0]["name"] == "Karolina Kowalska [AN]"
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
 
 def test_conference():
@@ -390,36 +316,14 @@ def test_conference():
             "headers": headars,
         },
     )
+    status_check_code = response.status_code
+    status_check()
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()[0]["subject"] == "Podsumowanie I semestru - średnia klasy, oceny, frekwencja, zachowanie."
         assert response.json()[1]["date"] == "06.09.2019 16:30"
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
 
 def test_mobile_access_registed():
@@ -445,36 +349,15 @@ def test_mobile_access_registed():
             "headers": headars,
         },
     )
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()[0]["name"] == "To Be Filled By O.E.M.#To Be Filled By O.E.M. (Windows 8.1)"
         assert response.json()[1]["id"] == 1234
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
 
 def test_mobile_access_register():
@@ -498,36 +381,15 @@ def test_mobile_access_register():
             "ssl": ssl,
         },
     )
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["pin"] == "999999"
         assert response.json()["qr_code_image"]
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
 
 def test_mobile_access_delete_registed():
@@ -553,38 +415,17 @@ def test_mobile_access_delete_registed():
             "headers": headars,
         },
     )
+    global status_check_code
+    status_check_code = response.status_code
+    status_check()
     # Nowa metoda testowania
     # if response.status_code == 404:
     #    print(response.json())
     # else:
     #    print("Test")
+    """
     if response.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["success"] == True
-    elif response.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-    elif response.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(response.status_code) + fg.rs)
-    elif response.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(response.status_code) + fg.rs)
-        formatted_string = json.dumps(response.json(), indent=4)
-        print(formatted_string)
-    elif response.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(response.status_code) + fg.rs)
-    elif response.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(response.status_code) + fg.rs)
-    elif response.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(response.status_code) + fg.rs)
-    elif response.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(response.status_code) + fg.rs)
+    """
     #print(response.json())
