@@ -37,7 +37,6 @@ def test_login_correct():
     school_id = login.json()["students"][0]["school_id"]
     #print(login.json())
     if login.status_code == 200:
-        assert login.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(login.status_code) + fg.rs)
         assert login.json()["symbol"] == "powiatwulkanowy"
         assert login.json()["host"] == "fakelog.cf"
@@ -121,7 +120,6 @@ def test_login_incorrect():
     elif response.status_code == 401:
         print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
     elif response.status_code == 403:
-        assert response.status_code == 403
         print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
         assert response.json() == {"detail": "Username or password is incorrect"}
     elif response.status_code == 404:
@@ -176,7 +174,6 @@ def test_symbol_incorrect():
     elif response.status_code == 401:
         print("\n" + fg.red + "Unauthorized " + str(response.status_code) + fg.rs)
     elif response.status_code == 403:
-        assert response.status_code == 403
         print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
         assert response.json() == {"detail": "Symbol is incorrect"}
     elif response.status_code == 404:
@@ -224,7 +221,6 @@ def test_notes():
         },
     )
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
         assert (
@@ -283,7 +279,6 @@ def test_grades():
         },
     )
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["subjects"][0]["grades"][0]["teacher"] == "Karolina Kowalska"
         assert response.json()["subjects"][0]["grades"][0]["symbol"] == "Akt"
@@ -341,7 +336,6 @@ def test_school_info():
         },
     )
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["school"]["name"] == "Publiczna szkoła Wulkanowego nr 1 w fakelog.cf"
         assert response.json()["teachers"][0]["name"] == "Karolina Kowalska [AN]"
@@ -397,7 +391,6 @@ def test_conference():
         },
     )
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()[0]["subject"] == "Podsumowanie I semestru - średnia klasy, oceny, frekwencja, zachowanie."
         assert response.json()[1]["date"] == "06.09.2019 16:30"
@@ -453,7 +446,6 @@ def test_mobile_access_registed():
         },
     )
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()[0]["name"] == "To Be Filled By O.E.M.#To Be Filled By O.E.M. (Windows 8.1)"
         assert response.json()[1]["id"] == 1234
@@ -507,7 +499,6 @@ def test_mobile_access_register():
         },
     )
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["pin"] == "999999"
         assert response.json()["qr_code_image"]
@@ -568,7 +559,6 @@ def test_mobile_access_delete_registed():
     # else:
     #    print("Test")
     if response.status_code == 200:
-        assert response.status_code == 200
         print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
         assert response.json()["success"] == True
     elif response.status_code == 400:
