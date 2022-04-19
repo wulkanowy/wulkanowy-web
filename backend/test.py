@@ -5,10 +5,7 @@ from main import app
 import pytest
 import json
 import requests
-
 client = TestClient(app)
-
-
 class fg:
     lightgreen = "\x1B[38;5;46m"
     orange = "\x1B[38;5;208m"
@@ -36,13 +33,13 @@ def status_check(status_check_code, status_check_json):
     if status_check_code == 200:
         status_check_response = print("\n" + fg.lightgreen + "OK " + str(status_check_code) + fg.rs)
     elif status_check_code == 111:
-        status_check_code = print("\n" + fg.red + "Connection refused " + str(status_check_code) + fg.rs)
+        status_check_response = print("\n" + fg.red + "Connection refused " + str(status_check_code) + fg.rs)
     elif status_check_code == 307:
-        status_check_code = print("\n" + fg.red + "Temporary redirect " + str(status_check_code) + fg.rs)
+        status_check_response = print("\n" + fg.orange + "Temporary redirect " + str(status_check_code) + fg.rs)
     elif status_check_code == 308:
-        status_check_code = print("\n" + fg.red + "Permanent redirect " + str(status_check_code) + fg.rs)
+        status_check_response = print("\n" + fg.orange + "Permanent redirect " + str(status_check_code) + fg.rs)
     elif status_check_code == 310:
-        status_check_code = print("\n" + fg.red + "Too many redirects " + str(status_check_code) + fg.rs)
+        status_check_response = print("\n" + fg.red + "Too many redirects " + str(status_check_code) + fg.rs)
     elif status_check_code == 400:
         status_check_response = print("\n" + fg.red + "Bad Request " + str(status_check_code) + fg.rs)
         try:
@@ -56,7 +53,7 @@ def status_check(status_check_code, status_check_json):
     elif status_check_code == 404:
         status_check_response = print("\n" + fg.orange + "Not Found " + str(status_check_code) + fg.rs)
     elif status_check_code == 405:
-        status_check_response = print("\n" + fg.red + "Method Not Allowed " + str(status_check_code) + fg.rs)
+        status_check_response = print("\n" + fg.orange + "Method Not Allowed " + str(status_check_code) + fg.rs)
         try:
             print(json.dumps(status_check_json, indent=4))
         except:
@@ -72,7 +69,7 @@ def status_check(status_check_code, status_check_json):
     elif status_check_code == 429:
         status_check_response = print("\n" + fg.red + "Too Many Requests " + str(status_check_code) + fg.rs)
     elif status_check_code == 500:
-        status_check_response = print("\n" + fg.orange + "Internal Server Error " + str(status_check_code) + fg.rs)
+        status_check_response = print("\n" + fg.red + "Internal Server Error " + str(status_check_code) + fg.rs)
     elif status_check_code == 502:
         status_check_response = print("\n" + fg.orange + "Bad Gateway " + str(status_check_code) + fg.rs)
     elif status_check_code == 503:
@@ -81,6 +78,14 @@ def status_check(status_check_code, status_check_json):
         status_check_response = print("\n" + fg.orange + "Gateway Timeout " + str(status_check_code) + fg.rs)
     elif status_check_code == 505:
         status_check_response = print("\n" + fg.orange + "HTTP Version Not Supported " + str(status_check_code) + fg.rs)
+    elif status_check_code == 521:
+        status_check_response = print("\n" + fg.red + "Web server is down " + str(status_check_code) + fg.rs)
+    elif status_check_code == 522:
+        status_check_response = print("\n" + fg.red + "Connection timed out " + str(status_check_code) + fg.rs)
+    elif status_check_code == 525:
+        status_check_response = print("\n" + fg.red + "SSL Handshake Failed " + str(status_check_code) + fg.rs)
+    elif status_check_code == 526:
+        status_check_response = print("\n" + fg.red + "Invalid SSL Certificate " + str(status_check_code) + fg.rs)
     try:
         return status_check_response, status_check_json
     except:
@@ -88,11 +93,16 @@ def status_check(status_check_code, status_check_json):
 
 
 def test_check_connection():
-    check = requests.get(
-        "http://fakelog.cf",
-    )
+    if ssl == "true":
+        check = requests.get(
+            "https://fakelog.cf",
+        )
+    elif ssl == "false":
+        check = requests.get(
+            "http://fakelog.cf",
+        )
     status_check(check.status_code, check.json)
-    if check.status_code == 503:
+    if check.status_code == 503 or check.status_code == 521 or check.status_code == 522 or check.status_code == 525 or check.status_code == 526 or check.status_code == 429 or check.status_code == 408 or check.status_code == 500 or check.status_code == 502 or check.status_code == 504 or check.status_code == 111:
         global host
         host = backuphost
         print(fg.orange + "Main host unavailable. Changed to backup host" + fg.rs)
@@ -168,7 +178,7 @@ def test_login_incorrect():
         },
     )
     status_check(response.status_code, response.json())
-    assert response.json() == {"detail": "Username or password is incorrect"}
+    assert response.json() == {'detail': 'Username or password is incorrect'}
 
 
 def test_symbol_incorrect():
