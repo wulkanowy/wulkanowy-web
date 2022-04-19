@@ -1,18 +1,25 @@
 from errno import errorcode
+from re import S
 from fastapi.testclient import TestClient
 from main import app
 import pytest
 import json
+import requests
+
 client = TestClient(app)
+
+
 class fg:
-    lightgreen = '\x1B[38;5;46m'
-    orange = '\x1B[38;5;208m'
-    red = '\x1B[38;5;160m'
-    rs = '\033[0m'
+    lightgreen = "\x1B[38;5;46m"
+    orange = "\x1B[38;5;208m"
+    red = "\x1B[38;5;160m"
+    rs = "\033[0m"
+
 # Ustawienia dla wszystkich testów
 nick = "jan@fakelog.cf"
 password = "jan123"
 host = "fakelog.cf"
+backuphost = "fakelog.tk"
 symbol = "powiatwulkanowy"
 ssl = "false"
 # Ustawienia tygodni dla testów
@@ -24,14 +31,24 @@ nick_invalid = "jan@fakelog.cf"
 password_invalid = "Jan321"
 symbol_invalid = "warszawa"
 
-def status_check(): 
+
+def status_check(status_check_code, status_check_json):
     if status_check_code == 200:
-        global status_check_response, status_check_json
         status_check_response = print("\n" + fg.lightgreen + "OK " + str(status_check_code) + fg.rs)
+    elif status_check_code == 111:
+        status_check_code = print("\n" + fg.red + "Connection refused " + str(status_check_code) + fg.rs)
+    elif status_check_code == 307:
+        status_check_code = print("\n" + fg.red + "Temporary redirect " + str(status_check_code) + fg.rs)
+    elif status_check_code == 308:
+        status_check_code = print("\n" + fg.red + "Permanent redirect " + str(status_check_code) + fg.rs)
+    elif status_check_code == 310:
+        status_check_code = print("\n" + fg.red + "Too many redirects " + str(status_check_code) + fg.rs)
     elif status_check_code == 400:
         status_check_response = print("\n" + fg.red + "Bad Request " + str(status_check_code) + fg.rs)
-        formatted_string = json.dumps(json.loads(status_check_json), indent=4)
-        print(formatted_string)
+        try:
+            print(json.dumps(status_check_json, indent=4))
+        except:
+            print(status_check_json)
     elif status_check_code == 401:
         status_check_response = print("\n" + fg.red + "Unauthorized " + str(status_check_code) + fg.rs)
     elif status_check_code == 403:
@@ -40,12 +57,20 @@ def status_check():
         status_check_response = print("\n" + fg.orange + "Not Found " + str(status_check_code) + fg.rs)
     elif status_check_code == 405:
         status_check_response = print("\n" + fg.red + "Method Not Allowed " + str(status_check_code) + fg.rs)
-        formatted_string = json.dumps(json.loads(status_check_json), indent=4)
-        print(formatted_string)
+        try:
+            print(json.dumps(status_check_json, indent=4))
+        except:
+            print(status_check_json)
+    elif status_check_code == 408:
+        status_check_response = print("\n" + fg.orange + "Request Timeout " + str(status_check_code) + fg.rs)
     elif status_check_code == 422:
         status_check_response = print("\n" + fg.red + "Unprocessable Entity " + str(status_check_code) + fg.rs)
-        formatted_string = json.dumps(json.loads(status_check_json), indent=4)
-        print(formatted_string)
+        try:
+            print(json.dumps(status_check_json, indent=4))
+        except:
+            print(status_check_json)
+    elif status_check_code == 429:
+        status_check_response = print("\n" + fg.red + "Too Many Requests " + str(status_check_code) + fg.rs)
     elif status_check_code == 500:
         status_check_response = print("\n" + fg.orange + "Internal Server Error " + str(status_check_code) + fg.rs)
     elif status_check_code == 502:
@@ -54,52 +79,51 @@ def status_check():
         status_check_response = print("\n" + fg.orange + "Service Unavailable " + str(status_check_code) + fg.rs)
     elif status_check_code == 504:
         status_check_response = print("\n" + fg.orange + "Gateway Timeout " + str(status_check_code) + fg.rs)
-    return status_check_response
+    elif status_check_code == 505:
+        status_check_response = print("\n" + fg.orange + "HTTP Version Not Supported " + str(status_check_code) + fg.rs)
+    try:
+        return status_check_response, status_check_json
+    except:
+        return status_check_response
+
+
+def test_check_connection():
+    check = requests.get(
+        "http://fakelog.cf",
+    )
+    status_check(check.status_code, check.json)
+    if check.status_code == 503:
+        global host
+        host = backuphost
+        print(fg.orange + "Main host unavailable. Changed to backup host" + fg.rs)
+
 
 def test_login_correct():
+    global cookies, headars, student, school_id, errorcode
     login = client.post(
         "/login",
         headers={"Content-Type": "application/json"},
-        json={"username": nick, "password": password, "host": host, "symbol": symbol, "ssl": ssl},
+        json={
+            "username": nick,
+            "password": password,
+            "host": host,
+            "symbol": symbol,
+            "ssl": ssl,
+        },
     )
-    global cookies, headars, student, school_id
     cookies = login.json()["vulcan_cookies"]
     headars = login.json()["students"][0]["headers"]
     student = login.json()["students"][0]["cookies"]
     school_id = login.json()["students"][0]["school_id"]
-    #print(login.json())
+    # print(login.json())
     if login.status_code == 200:
         print("\n" + fg.lightgreen + "OK " + str(login.status_code) + fg.rs)
         assert login.json()["symbol"] == "powiatwulkanowy"
-        assert login.json()["host"] == "fakelog.cf"
-    elif login.status_code == 400:
-        print("\n" + fg.red + "Bad Request " + str(login.status_code) + fg.rs)
-        formatted_string = json.dumps(login.json(), indent=4)
-        print(formatted_string)
-    elif login.status_code == 401:
-        print("\n" + fg.red + "Unauthorized " + str(login.status_code) + fg.rs)
-    elif login.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(login.status_code) + fg.rs)
-    elif login.status_code == 404:
-        print("\n" + fg.orange + "Not Found " + str(login.status_code) + fg.rs)
-    elif login.status_code == 405:
-        print("\n" + fg.red + "Method Not Allowed " + str(login.status_code) + fg.rs)
-        formatted_string = json.dumps(login.json(), indent=4)
-        print(formatted_string)
-    elif login.status_code == 422:
-        print("\n" + fg.red + "Unprocessable Entity " + str(login.status_code) + fg.rs)
-        formatted_string = json.dumps(login.json(), indent=4)
-        print(formatted_string)
-    elif login.status_code == 500:
-        print("\n" + fg.orange + "Internal Server Error " + str(login.status_code) + fg.rs)
-    elif login.status_code == 502:
-        print("\n" + fg.orange + "Bad Gateway " + str(login.status_code) + fg.rs)
-    elif login.status_code == 503:
-        print("\n" + fg.orange + "Service Unavailable " + str(login.status_code) + fg.rs)
-    elif login.status_code == 504:
-        print("\n" + fg.orange + "Gateway Timeout " + str(login.status_code) + fg.rs)
+        try:
+            assert login.json()["host"] == "fakelog.cf"
+        except:
+            assert login.json()["host"] == "fakelog.tk"
     if not cookies:
-        global errorcode
         errorcode = 1
         print("\nCookies output: ")
         print(login.json()["vulcan_cookies"])
@@ -143,15 +167,8 @@ def test_login_incorrect():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_json = response.json()
-    status_check_code = response.status_code
-    status_check()
-    """
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-        assert response.json() == {"detail": "Username or password is incorrect"}
-    """
+    status_check(response.status_code, response.json())
+    assert response.json() == {"detail": "Username or password is incorrect"}
 
 
 def test_symbol_incorrect():
@@ -176,15 +193,9 @@ def test_symbol_incorrect():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
-    """
-    elif response.status_code == 403:
-        print("\n" + fg.red + "Forbidden " + str(response.status_code) + fg.rs)
-        assert response.json() == {"detail": "Symbol is incorrect"}
-    print(response.json())
-    """
+    status_check(response.status_code, response.json())
+    assert response.json() == {"detail": "Symbol is incorrect"}
+
 
 def test_notes():
     if errorcode == 1:
@@ -209,19 +220,14 @@ def test_notes():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
-        assert (
+    status_check(response.status_code, response.json())
+    assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
+    assert (
         response.json()["notes"][3]["content"]
         == "Litwo! Ojczyzno moja! Ty jesteś jak zdrowie. Ile cię trzeba cenić, ten tylko aż kędy pieprz rośnie gdzie podział się? szukać prawodawstwa."
-        )
-    """
-    #print(response.json())
+    )
+    # print(response.json())
+
 
 def test_grades():
     if errorcode == 1:
@@ -246,17 +252,11 @@ def test_grades():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()["subjects"][0]["grades"][0]["teacher"] == "Karolina Kowalska"
-        assert response.json()["subjects"][0]["grades"][0]["symbol"] == "Akt"
-    """
-    #print(response.json())
-    #assert response.json()['grades'][3]['grade'] == '4'
+    status_check(response.status_code, response.json())
+    assert response.json()["subjects"][0]["grades"][0]["teacher"] == "Karolina Kowalska"
+    assert response.json()["subjects"][0]["grades"][0]["symbol"] == "Akt"
+    # print(response.json())
+    # assert response.json()['grades'][3]['grade'] == '4'
 
 
 def test_school_info():
@@ -282,16 +282,14 @@ def test_school_info():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()["school"]["name"] == "Publiczna szkoła Wulkanowego nr 1 w fakelog.cf"
-        assert response.json()["teachers"][0]["name"] == "Karolina Kowalska [AN]"
-    """
-    #print(response.json())
+    status_check(response.status_code, response.json())
+    assert (
+        response.json()["school"]["name"]
+        == "Publiczna szkoła Wulkanowego nr 1 w fakelog.cf"
+    )
+    assert response.json()["teachers"][0]["name"] == "Karolina Kowalska [AN]"
+    # print(response.json())
+
 
 def test_conference():
     if errorcode == 1:
@@ -301,7 +299,7 @@ def test_conference():
     elif errorcode == 3:
         pytest.skip("Skipped due to no student cookies detected")
     elif errorcode == 4:
-        pytest.skip("Skipped due to no school ID detected")   
+        pytest.skip("Skipped due to no school ID detected")
     response = client.post(
         "/uonetplus-uczen/conferences",
         headers={"Content-Type": "application/json"},
@@ -316,15 +314,14 @@ def test_conference():
             "headers": headars,
         },
     )
-    status_check_code = response.status_code
-    status_check()
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()[0]["subject"] == "Podsumowanie I semestru - średnia klasy, oceny, frekwencja, zachowanie."
-        assert response.json()[1]["date"] == "06.09.2019 16:30"
-    """
-    #print(response.json())
+    status_check(response.status_code, response.json())
+    assert (
+        response.json()[0]["subject"]
+        == "Podsumowanie I semestru - średnia klasy, oceny, frekwencja, zachowanie."
+    )
+    assert response.json()[1]["date"] == "06.09.2019 16:30"
+    # print(response.json())
+
 
 def test_mobile_access_registed():
     if errorcode == 1:
@@ -349,16 +346,14 @@ def test_mobile_access_registed():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()[0]["name"] == "To Be Filled By O.E.M.#To Be Filled By O.E.M. (Windows 8.1)"
-        assert response.json()[1]["id"] == 1234
-    """
-    #print(response.json())
+    status_check(response.status_code, response.json())
+    assert (
+        response.json()[0]["name"]
+        == "To Be Filled By O.E.M.#To Be Filled By O.E.M. (Windows 8.1)"
+    )
+    assert response.json()[1]["id"] == 1234
+    # print(response.json())
+
 
 def test_mobile_access_register():
     if errorcode == 1:
@@ -381,16 +376,11 @@ def test_mobile_access_register():
             "ssl": ssl,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()["pin"] == "999999"
-        assert response.json()["qr_code_image"]
-    """
-    #print(response.json())
+    status_check(response.status_code, response.json())
+    assert response.json()["pin"] == "999999"
+    assert response.json()["qr_code_image"]
+    # print(response.json())
+
 
 def test_mobile_access_delete_registed():
     if errorcode == 1:
@@ -415,17 +405,11 @@ def test_mobile_access_delete_registed():
             "headers": headars,
         },
     )
-    global status_check_code
-    status_check_code = response.status_code
-    status_check()
+    status_check(response.status_code, response.json())
     # Nowa metoda testowania
     # if response.status_code == 404:
     #    print(response.json())
     # else:
     #    print("Test")
-    """
-    if response.status_code == 200:
-        print("\n" + fg.lightgreen + "OK " + str(response.status_code) + fg.rs)
-        assert response.json()["success"] == True
-    """
-    #print(response.json())
+    assert response.json()["success"] == True
+    # print(response.json())
