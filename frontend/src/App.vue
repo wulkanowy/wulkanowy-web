@@ -11,9 +11,9 @@ export default Vue.extend({
   name: "App",
 
   beforeMount() {
-    let dark_theme = localStorage.getItem("dark_theme");
-    if (dark_theme) {
-      if (dark_theme == "true") {
+    let darkTheme = localStorage.getItem("dark_theme");
+    if (darkTheme) {
+      if (darkTheme == "true") {
         this.$vuetify.theme.dark = true;
       } else {
         this.$vuetify.theme.dark = false;
