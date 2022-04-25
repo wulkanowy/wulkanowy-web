@@ -1,24 +1,24 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 interface State {
-  loading: boolean
-  loginData: any
-  logged_in: boolean
-  selected_student: number
-  small_ui: boolean
-  view: string
+  loading: boolean;
+  loginData: any;
+  logged_in: boolean;
+  selected_student: number;
+  small_ui: boolean;
+  view: string;
   drawer: {
-    show: boolean
-    mini: boolean
-  }
+    show: boolean;
+    mini: boolean;
+  };
   error: {
-    show: boolean
-    description: string
-    details: string
-  }
+    show: boolean;
+    description: string;
+    details: string;
+  };
 }
 
 export default new Vuex.Store({
@@ -28,21 +28,18 @@ export default new Vuex.Store({
     logged_in: false,
     selected_student: 0,
     small_ui: false,
-    view: 'dashboard',
+    view: "dashboard",
     drawer: {
       show: true,
       mini: false,
     },
     error: {
       show: false,
-      description: '',
-      details: '',
-    }
+      description: "",
+      details: "",
+    },
   }),
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+  mutations: {},
+  actions: {},
+  modules: {},
+});

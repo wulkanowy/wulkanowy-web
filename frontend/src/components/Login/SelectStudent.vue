@@ -4,19 +4,17 @@
       <v-card-title class="d-flex justify-center">Select Student</v-card-title>
       <div id="login-students-list" class="overflow-y-auto">
         <v-list>
-          <v-list-item-group
-          color="primary"
-          v-model="$store.state.selected_student"
-          mandatory>
+          <v-list-item-group color="primary" v-model="$store.state.selected_student" mandatory>
             <v-list-item
-            v-for="( student, id ) in this.$store.state.loginData.students"
-            :key="id"
-            :value="id">
+              v-for="(student, id) in this.$store.state.loginData.students"
+              :key="id"
+              :value="id"
+            >
               <template #default="{ active }">
                 <v-list-item-action>
                   <v-icon
                     :color="active ? 'primary' : ''"
-                    v-text="active ? 'mdi-radiobox-marked': 'mdi-radiobox-blank'"
+                    v-text="active ? 'mdi-radiobox-marked' : 'mdi-radiobox-blank'"
                   />
                 </v-list-item-action>
                 <v-list-item-content>
@@ -34,28 +32,25 @@
         </v-list>
       </div>
       <v-card-actions class="mx-5 mb-5 mt-auto">
-        <v-spacer/>
-        <v-btn
-          color="primary"
-          type="submit"
-        >Sign in</v-btn>
+        <v-spacer />
+        <v-btn color="primary" type="submit">Sign in</v-btn>
       </v-card-actions>
     </v-form>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'SelectStudent',
+  name: "SelectStudent",
 
   methods: {
     select_student() {
-      this.$router.push('/user');
-    }
-  }
-})
+      this.$router.push("/user");
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -66,6 +61,6 @@ export default Vue.extend({
 }
 
 .theme--dark.v-btn {
-  color: #1E1E1E !important;
+  color: #1e1e1e !important;
 }
 </style>

@@ -6,38 +6,42 @@
           <Baner />
         </v-col>
         <v-col cols="12" md="7">
-          <LoginForm v-if="!this.$store.state.logged_in & !this.$store.state.loading"/>
-          <Loading v-if="this.$store.state.loading"/>
-          <SelectStudent v-if="this.$store.state.logged_in & !this.$store.state.loading"/>
+          <LoginForm v-if="!this.$store.state.logged_in & !this.$store.state.loading" />
+          <Loading v-if="this.$store.state.loading" />
+          <SelectStudent v-if="this.$store.state.logged_in & !this.$store.state.loading" />
         </v-col>
       </v-row>
     </v-card>
-    <Snackbar/>
+    <Snackbar />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { LoginForm, SelectStudent, Loading, Baner, Snackbar } from '@/components';
+import Vue from "vue";
+import { LoginForm, SelectStudent, Loading, Baner, Snackbar } from "@/components";
 
 export default Vue.extend({
-  name: 'Login',
+  name: "Login",
 
   components: {
-    LoginForm, Loading, SelectStudent, Baner, Snackbar
+    LoginForm,
+    Loading,
+    SelectStudent,
+    Baner,
+    Snackbar,
   },
-
   beforeMount() {
     if (this.$store.state.logged_in) {
-      this.$router.push('/user');
+      this.$router.push("/user");
     }
-  }
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 #login {
-  background: linear-gradient(rgba(0,0,0,.1),rgba(0, 0, 0, 0.1)), url("../assets/img/login_wallpaper.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("../assets/img/login_wallpaper.jpg");
   background-size: cover;
   height: 100%;
   width: 100%;

@@ -11,19 +11,13 @@
           <v-card-title>Select student</v-card-title>
           <div id="students-list" class="overflow-y-auto">
             <v-list>
-              <v-list-item-group
-                color="primary"
-                v-model="$store.state.selected_student"
-                mandatory>
-                <v-list-item
-                  v-for="(student, id) in students"
-                  :key="id"
-                  :value="id">
+              <v-list-item-group color="primary" v-model="$store.state.selected_student" mandatory>
+                <v-list-item v-for="(student, id) in students" :key="id" :value="id">
                   <template #default="{ active }">
                     <v-list-item-action>
                       <v-icon
                         :color="active ? 'primary' : ''"
-                        v-text="active ? 'mdi-radiobox-marked': 'mdi-radiobox-blank'"
+                        v-text="active ? 'mdi-radiobox-marked' : 'mdi-radiobox-blank'"
                       />
                     </v-list-item-action>
                     <v-list-item-content>
@@ -52,19 +46,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'AccountManager',
-
+  name: "AccountManager",
   computed: {
     students() {
       return this.$store.state.loginData.students;
     },
     initials() {
       const index = this.$store.state.selected_student;
-      return this.$store.state.loginData.students[index].student_name.charAt(0)
-        + this.$store.state.loginData.students[index].student_surname.charAt(0);
+      return (
+        this.$store.state.loginData.students[index].student_name.charAt(0) +
+        this.$store.state.loginData.students[index].student_surname.charAt(0)
+      );
     },
   },
 
@@ -73,10 +68,10 @@ export default Vue.extend({
       this.$store.state.loginData = [];
       this.$store.state.selected_student = undefined;
       this.$store.state.logged_in = false;
-      this.$router.push('/');
-    }
+      this.$router.push("/");
+    },
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>

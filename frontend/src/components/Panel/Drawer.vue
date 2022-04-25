@@ -23,78 +23,78 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 interface DrawerData {
-  nav: any
+  nav: any;
 }
 
 export default Vue.extend({
-  name: 'Drawer',
+  name: "Drawer",
 
   data: (): DrawerData => ({
     nav: [
       {
-        icon: 'mdi-view-dashboard-outline',
-        name: 'dashboard',
+        icon: "mdi-view-dashboard-outline",
+        name: "dashboard",
       },
       {
-        icon: 'mdi-numeric-6-box-multiple-outline',
-        name: 'grades',
+        icon: "mdi-numeric-6-box-multiple-outline",
+        name: "grades",
       },
       {
-        icon: 'mdi-table-edit',
-        name: 'attedance',
+        icon: "mdi-table-edit",
+        name: "attedance",
       },
       {
-        icon: 'mdi-timetable',
-        name: 'timetable',
+        icon: "mdi-timetable",
+        name: "timetable",
       },
       {
-        icon: 'mdi-calendar',
-        name: 'exams',
+        icon: "mdi-calendar",
+        name: "exams",
       },
       {
-        icon: 'mdi-notebook-outline',
-        name: 'homework',
+        icon: "mdi-notebook-outline",
+        name: "homework",
       },
       {
-        icon: 'mdi-trophy-outline',
-        name: 'notes and achievements',
+        icon: "mdi-trophy-outline",
+        name: "notes and achievements",
       },
       {
-        icon: 'mdi-clover',
-        name: 'lucky number',
+        icon: "mdi-clover",
+        name: "lucky number",
       },
       {
-        icon: 'mdi-account-multiple-outline',
-        name: 'conferences',
+        icon: "mdi-account-multiple-outline",
+        name: "conferences",
       },
       {
-        icon: 'mdi-alert-circle-outline',
-        name: 'school annocuments',
+        icon: "mdi-alert-circle-outline",
+        name: "school annocuments",
       },
       {
-        icon: 'mdi-domain',
-        name: 'school and teachers',
+        icon: "mdi-domain",
+        name: "school and teachers",
       },
       {
-        icon: 'mdi-card-account-details-outline',
-        name: 'student data',
+        icon: "mdi-card-account-details-outline",
+        name: "student data",
       },
       {
-        icon: 'mdi-devices',
-        name: 'mobile devices',
+        icon: "mdi-devices",
+        name: "mobile devices",
       },
       {
-        icon: 'mdi-email-outline',
-        name: 'messages',
+        icon: "mdi-email-outline",
+        name: "messages",
       },
       {
-        icon: 'mdi-cog-outline',
-        name: 'settings',
+        icon: "mdi-cog-outline",
+        name: "settings",
       },
     ],
-  })
-})
+  }),
+});
 </script>

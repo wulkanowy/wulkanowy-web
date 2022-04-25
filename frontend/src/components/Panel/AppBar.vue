@@ -9,19 +9,18 @@
         <v-icon v-else>mdi-chevron-left</v-icon>
       </v-btn>
       <v-toolbar-title class="text-capitalize">{{ this.$store.state.view }}</v-toolbar-title>
-      <v-spacer/>
-      <AccountManager/>
+      <v-spacer />
+      <AccountManager />
     </v-app-bar>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import AccountManager from '../../components/Panel/AccountManager.vue';
+import Vue from "vue";
+import AccountManager from "../../components/Panel/AccountManager.vue";
 
 export default Vue.extend({
-  name: 'AppBar',
-
+  name: "AppBar",
   components: {
     AccountManager,
   },
