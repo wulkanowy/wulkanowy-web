@@ -34,4 +34,4 @@ class Grade(BaseModel):
 class DescriptiveGrade(BaseModel):
     subject: str
     description: str
-    is_religia_or_etyka: bool
+    is_religion_or_ethics: bool

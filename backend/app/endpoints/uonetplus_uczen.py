@@ -114,7 +114,7 @@ def get_grades(data: models.UonetPlusUczen, key: str = Depends(cookie_sec)):
         descriptive_grade = models.DescriptiveGrade(
             subject=descriptive_grade["NazwaPrzedmiotu"],
             description=descriptive_grade["Opis"],
-            is_religia_or_etyka=descriptive_grade["IsReligiaEtyka"],
+            is_religion_or_ethics=descriptive_grade["IsReligiaEtyka"],
         )
         descriptive_grades.append(descriptive_grade)
     grades = models.Grades(

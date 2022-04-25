@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.post("/login")
-def main(data: models.Login, response: Response):
+def login(data: models.Login, response: Response):
     session = requests.Session()
     cers = send_credentials(data.username, data.password, data.symbol, data.host, data.ssl, session)
     students = get_students(data.symbol, data.host, data.ssl, cers, session)
