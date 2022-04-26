@@ -5,12 +5,12 @@
         >Sign in with the student or parent account</v-card-title
       >
       <div class="px-5">
-        <v-text-field outlined label="Email" v-model="loginData.username" :rules="rules.required" />
+        <v-text-field outlined label="Email" v-model="loginData.username" :rules="[rules.required]" />
         <v-text-field
           outlined
           label="Password"
           v-model="loginData.password"
-          :rules="rules.required"
+          :rules="[rules.required]"
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append="showPassword = !showPassword"
@@ -19,7 +19,7 @@
           outlined
           label="Symbol"
           v-model="loginData.symbol"
-          :rules="rules.required"
+          :rules="[rules.required]"
           :items="
             loginData.selectedRegisterVariantName == 'Fakelog'
               ? ['powiatwulkanowy', 'adsf']
@@ -30,7 +30,7 @@
           outlined
           label="UONET+ register variant"
           v-model="loginData.selectedRegisterVariantName"
-          :rules="rules.required"
+          :rules="[rules.required]"
           :items="registerVariantsNames"
           @change="registerVariantSelected()"
         />
