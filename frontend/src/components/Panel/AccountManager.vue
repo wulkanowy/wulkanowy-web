@@ -1,6 +1,6 @@
 <template>
   <div id="account-manager">
-    <v-dialog width="450">
+    <v-dialog width="450" scrollable>
       <template #activator="{ on }">
         <v-btn icon v-on="on">
           <v-avatar color="primary" class="white--text">{{ initials }}</v-avatar>
@@ -9,7 +9,8 @@
       <template #default="dialog">
         <v-card>
           <v-card-title>Select student</v-card-title>
-          <div id="students-list" class="overflow-y-auto">
+          <v-divider></v-divider>
+          <div class="overflow-y-auto">
             <v-list>
               <v-list-item-group color="primary" v-model="$store.state.selected_student" mandatory>
                 <v-list-item v-for="(student, id) in students" :key="id" :value="id">
@@ -34,6 +35,7 @@
               </v-list-item-group>
             </v-list>
           </div>
+          <v-divider></v-divider>
           <v-card-actions>
             <v-spacer />
             <v-btn text color="primary" @click="log_out">Log Out</v-btn>
@@ -73,11 +75,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-@media only screen and (min-height: 960px) {
-  #students-list {
-    height: 344px;
-  }
-}
-</style>
