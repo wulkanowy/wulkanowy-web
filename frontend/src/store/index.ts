@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -39,7 +40,19 @@ export default new Vuex.Store({
       details: "",
     },
   }),
-  mutations: {},
+  mutations: {
+    log_out(state) {
+      state.loginData = [];
+      state.logged_in = false;
+      router.push("/")
+    },
+    drawer_show(state) {
+      state.drawer.show = !state.drawer.show
+    },
+    drawer_mini(state) {
+      state.drawer.mini = !state.drawer.mini
+    },
+  },
   actions: {},
   modules: {},
 });

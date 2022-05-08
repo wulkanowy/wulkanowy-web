@@ -8,7 +8,7 @@
       </template>
       <template #default="dialog">
         <v-card>
-          <v-card-title>Select student</v-card-title>
+          <v-card-title>{{ $t("login.select_student_header") }}</v-card-title>
           <v-divider></v-divider>
           <div class="overflow-y-auto">
             <v-list>
@@ -38,8 +38,8 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer />
-            <v-btn text color="primary" @click="log_out">Log Out</v-btn>
-            <v-btn text color="primary" @click="dialog.value = false">Close</v-btn>
+            <v-btn text color="primary" @click="$store.commit('log_out')">{{ $t("log_out") }}</v-btn>
+            <v-btn text color="primary" @click="dialog.value = false">{{ $t("close") }}</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -62,15 +62,6 @@ export default Vue.extend({
         this.$store.state.loginData.students[index].student_name.charAt(0) +
         this.$store.state.loginData.students[index].student_surname.charAt(0)
       );
-    },
-  },
-
-  methods: {
-    log_out() {
-      this.$store.state.loginData = [];
-      this.$store.state.selected_student = undefined;
-      this.$store.state.logged_in = false;
-      this.$router.push("/");
     },
   },
 });
