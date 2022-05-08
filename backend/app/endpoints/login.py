@@ -98,9 +98,9 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
     )
     if not "nie został zarejestrowany" in crtr.text:
         soup = BeautifulSoup(crtr.text, "lxml")
-        tags = soup.select('.panel.linkownia.pracownik.klient a[href*="uonetplus-uczen"]')
-        for a in tags:
-            id = a["href"].split("/")[4]
+        schools = soup.select('.panel.linkownia.pracownik.klient a[href*="uonetplus-uczen"]')
+        for school in schools:
+            school_id = school["href"].split("/")[4]
             url = build_url(
                 subd="uonetplus-uczen",
                 path=paths.UCZEN.START,
@@ -161,7 +161,7 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                     start=datetime.fromisoformat(student["DziennikDataOd"]),
                     end=datetime.fromisoformat(student["DziennikDataDo"]),
                     full_name=student["UczenPelnaNazwa"],
-                    school_id=id,
+                    school_id=school_id,
                     school_symbol=symbol,
                     school_name=school_name,
                     cookies={
