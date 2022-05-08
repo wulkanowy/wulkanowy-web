@@ -106,7 +106,7 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                 path=paths.UCZEN.START,
                 symbol=symbol,
                 host=host,
-                schoolid=id,
+                schoolid=school_id,
                 ssl=ssl,
             )
             page = session.get(url)
