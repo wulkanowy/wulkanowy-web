@@ -4,7 +4,7 @@
     <Drawer />
     <v-main>
       <v-container fluid>
-        <v-window v-model="$store.state.view">
+        <v-window v-model="$store.state.view" touchless>
           <v-window-item transition="false" value="dashboard">this is dashbaord</v-window-item>
           <v-window-item transition="false" value="grades">this is grades</v-window-item>
           <v-window-item transition="false" value="attedance">this is attedance</v-window-item>
