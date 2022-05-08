@@ -119,7 +119,7 @@ def get_students(symbol: str, host: str, ssl: bool, cers, session):
                 path=paths.UCZEN.UCZENDZIENNIK_GET,
                 symbol=symbol,
                 host=host,
-                schoolid=id,
+                schoolid=school_id,
                 ssl=ssl,
             )
             students_response = session.post(url)
