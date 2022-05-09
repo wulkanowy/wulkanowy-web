@@ -31,7 +31,7 @@
           </v-list-item-group>
         </v-list>
       </div>
-      <v-card-actions class="mx-5 mb-5 mt-auto">
+      <v-card-actions class="px-5 pb-5 pt-0 mt-auto">
         <v-spacer />
         <v-btn color="primary" type="submit">Sign in</v-btn>
       </v-card-actions>
