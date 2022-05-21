@@ -31,20 +31,20 @@ def send_credentials(username: str, password: str, symbol: str, host: str, ssl: 
         symbol=symbol,
         ssl=ssl,
     )
-    data = {"LoginName": username, "Password": password}
-    page = session.post(url, data)
+    payload = {"LoginName": username, "Password": password}
+    page = session.post(url, payload)
     soup = BeautifulSoup(page.text, "lxml")
-    s = soup.select(".ErrorMessage, #ErrorTextLabel, #loginArea #errorText")
-    for tag in s:
-        msg = re.sub(r"\s+", " ", tag.text).strip()
+    error_tags = soup.select(".ErrorMessage, #ErrorTextLabel, #loginArea #errorText")
+    for error_tag in error_tags:
+        msg = re.sub(r"\s+", " ", error_tag.text).strip()
         if msg:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN, detail="Username or password is incorrect"
             )
-    wa: str = soup.select('input[name="wa"]')[0]["value"]
-    wresult: str = soup.select('input[name="wresult"]')[0]["value"]
-    s = soup.select('input[name="wctx"]')
-    wctx: str = s[0]["value"] if s else None
+    wa: str = soup.select_one('input[name="wa"]')["value"]
+    wresult: str = soup.select_one('input[name="wresult"]')["value"]
+    wctx_tag = soup.select_one('input[name="wctx"]')
+    wctx: str = wctx_tag["value"] if wctx_tag else None
     cers = {"wa": wa, "wresult": wresult, "wctx": wctx}
 
     return cers
