@@ -1,5 +1,4 @@
 from errno import errorcode
-from re import S
 from fastapi.testclient import TestClient
 from main import app
 import pytest
@@ -232,11 +231,8 @@ def test_notes():
     )
     status_check(response.status_code, response.json())
     assert response.json()["notes"][0]["teacher"] == "Karolina Kowalska [AN]"
-    assert (
-        response.json()["notes"][3]["content"]
-        == "Litwo! Ojczyzno moja! Ty jesteś jak zdrowie. Ile cię trzeba cenić, ten tylko aż kędy pieprz rośnie gdzie podział się? szukać prawodawstwa."
-    )
-    # print(response.json())
+    assert response.json()["notes"][1]["content"] == "+ 20p za udział w Konkursie Języka Angielskiego"
+    #print(response.json())
 
 
 def test_grades():
