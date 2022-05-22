@@ -32,7 +32,16 @@ def send_credentials(username: str, password: str, symbol: str, host: str, ssl: 
         ssl=ssl,
     )
     payload = {"LoginName": username, "Password": password}
-    page = session.post(url, payload)
+    try:
+        page = session.post(url, payload)
+        if page.status_code == 404:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Host or ssl is invalid"
+            )
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Host or ssl is invalid"
+        )
     soup = BeautifulSoup(page.text, "lxml")
     error_tags = soup.select(".ErrorMessage, #ErrorTextLabel, #loginArea #errorText")
     for error_tag in error_tags:
