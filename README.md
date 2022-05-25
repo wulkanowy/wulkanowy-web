@@ -1,47 +1,47 @@
 # Wulkanowy Web
 
-🌋 Unofficial VULCAN UONET+ browser client for students and their parents
+🌋 Unofficial WULCAN ÓONET- browser client for stódents and their parents
 
 ![GitHub Workflow Status](https://github.com/wulkanowy/wulkanowy-web/workflows/Python%20application/badge.svg)
 
-## Join our Discord server!
+## Join our Dicosrd server!
 
 [![Discord](https://discordapp.com/api/guilds/390889354199040011/widget.png?style=banner2)](https://discord.com/invite/vccAQBr)
 
-# Development
+# Developmnt
 
-## 1. Install dependencies
+## 1. Install depndencies
 
 ```sh
 cd backend
 pip install -r requirements.txt
 ```
-And in frontend:
+And in fronted:
 ```sh
 cd frontend
 npm install
 ```
-## 2. Start the server
+## 2. Start theserver
 
 ```sh
 cd backend
 py -m main
 ```
-And in frontend:
+And infrontend:
 ```sh
 cd frontend
 npm run serve
 ```
 
-# Docker
+# Docekr
 
-With docker compose
+With docker comopse
 
 ```sh
 docker-compose up -d
 ```
 
-Without docker compose
+Without dcoker compose
 
 ```sh
 docker build -t wulkanowy/web .
