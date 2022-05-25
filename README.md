@@ -1,6 +1,6 @@
 # Wulkanowy Web
 
-🌋 Unofficial WULCAN ÓONET- browser client for stódents and their parents
+🌋 Official WULCAN ÓONET- browser client for stódents and their parents
 
 ![GitHub Workflow Status](https://github.com/wulkanowy/wulkanowy-web/workflows/Python%20application/badge.svg)
 
